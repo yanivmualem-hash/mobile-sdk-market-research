@@ -2,12 +2,19 @@
 // so the shared link never changes. Auth comes from the gcloud CLI, which must
 // have Drive scope:  gcloud auth login --enable-gdrive-access --update-adc
 //
-// Usage:  node src/publish-slides.js [--verify]
+// Usage:  node src/publish-slides.js [--verify] [--force]
 //   --verify  re-exports the deck from Google and reports slide/notes counts
+//   --force   publish even when the branch guard says not to
+//
+// There is one shared Slides file and it is overwritten wholesale, so two people
+// publishing from two branches will silently clobber each other. The guard below
+// keeps publishing on the default branch, where the merged data lives.
 
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
+
+const FORCE = process.argv.includes("--force");
 
 const ROOT = path.resolve(__dirname, "..");
 const D = JSON.parse(fs.readFileSync(path.join(ROOT, "data/research.json"), "utf8"));
@@ -24,9 +31,45 @@ if (!fs.existsSync(PPTX)) {
   process.exit(1);
 }
 
+// ---- branch guard: don't let two collaborators clobber one shared deck ----
+function git(args) {
+  return execFileSync("git", args, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+}
+function guard() {
+  let branch;
+  try { branch = git(["rev-parse", "--abbrev-ref", "HEAD"]); }
+  catch (e) { return; } // not a git repo yet — nothing to guard
+  if (branch === "HEAD") return; // detached; leave it alone
+
+  let base = "main";
+  try { base = git(["symbolic-ref", "--short", "refs/remotes/origin/HEAD"]).replace(/^origin\//, ""); }
+  catch (e) {
+    try { git(["show-ref", "--verify", "--quiet", "refs/heads/main"]); base = "main"; }
+    catch (e2) { base = "master"; }
+  }
+
+  let dirty = "";
+  try { dirty = git(["status", "--porcelain", "--", "data"]); } catch (e) {}
+  if (dirty) {
+    console.warn("publish         note: data/ has uncommitted changes — publishing them anyway");
+  }
+
+  if (branch !== base && !FORCE) {
+    console.error(
+      "publish         refusing: you are on '" + branch + "', not '" + base + "'.\n" +
+      "                The deck is one shared file; publishing from a branch overwrites\n" +
+      "                whatever is live with your un-merged copy.\n" +
+      "                Merge to " + base + " first, or re-run with --force if you mean it."
+    );
+    process.exit(1);
+  }
+}
+guard();
+
 function token() {
   try {
-    return execFileSync("gcloud", ["auth", "print-access-token"], { encoding: "utf8" }).trim();
+    return execFileSync("gcloud", ["auth", "print-access-token"],
+      { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
   } catch (e) {
     console.error(
       "publish         gcloud has no valid token.\n" +

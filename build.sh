@@ -25,5 +25,6 @@ case "${1:-}" in
     done
     ;;
   --verify) build; node src/publish-slides.js --verify ;;
+  --force)  build; node src/publish-slides.js --force ;;
   *)        build; node src/publish-slides.js ;;
 esac

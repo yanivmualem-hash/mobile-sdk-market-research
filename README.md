@@ -23,6 +23,9 @@ That regenerates both outputs and pushes the deck to Google Slides.
 | `./build.sh --local` | rebuild both, don't touch Google Slides |
 | `./build.sh --verify` | rebuild, publish, then re-export from Google and confirm slide/notes counts |
 | `./build.sh --watch` | rebuild locally on every change to `data/` or `src/` (needs `brew install fswatch`) |
+| `./build.sh --force` | publish even when the branch guard objects (see *Working with someone else*) |
+
+First time on a new machine: `npm install`.
 
 ## What updates automatically
 
@@ -60,6 +63,40 @@ Copy an existing entry in `sdks[]` and fill in:
 Append to `problems[]` with `status` of `solved`, `partial`, or `open`. `title` and `note`
 go in the dashboard; `shortTitle` and `shortSolvedBy` are the compressed versions for the
 deck's 3×3 scorecard, so keep them to a few words.
+
+## Working with someone else
+
+Three separate things have to be shared, and they're easy to half-do:
+
+1. **This repo** — on GitHub, under the `risecodes` org.
+2. **The Google Slides deck** — the collaborator needs **Editor**, not Viewer. Without it
+   their `./build.sh` fails with a 404 on a file they can plainly see.
+3. **Their own Drive credentials** — see *Publishing prerequisites* below. Credentials are
+   per-person; nothing in this repo carries them.
+
+### One shared deck, so publish from `main`
+
+`src/publish-slides.js` overwrites the whole Slides file. Two people publishing from two
+branches would silently clobber each other — whoever ran last wins, with no conflict and
+no warning. So the publisher refuses to run unless you're on the default branch:
+
+```
+publish         refusing: you are on 'add-vendor', not 'main'.
+```
+
+The intended loop is: branch → edit `data/research.json` → `./build.sh --local` to check
+your work → PR → merge → `./build.sh` from `main` to update the live deck. `--force`
+overrides the guard if you genuinely mean to publish a branch.
+
+### Editing the data at the same time
+
+`data/research.json` is pretty-printed one field per line specifically so git can merge it.
+Two people adding *different* vendors merge cleanly. Two people editing the *same* vendor
+conflict like any other file — resolve it, then run `./build.sh --local` before committing,
+because a JSON file that merged cleanly can still be invalid.
+
+Don't commit `dist/`. It's generated and gitignored; a 50KB regenerated HTML file would
+conflict on every single merge.
 
 ## Publishing prerequisites
 
