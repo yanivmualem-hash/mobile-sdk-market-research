@@ -6,7 +6,7 @@ const path = require("path");
 const T = require("./theme");
 
 const ROOT = path.resolve(__dirname, "..");
-const data = JSON.parse(fs.readFileSync(path.join(ROOT, "data/research.json"), "utf8"));
+const data = require("./data").load();
 const h = T.hex;
 
 const esc = (s) =>

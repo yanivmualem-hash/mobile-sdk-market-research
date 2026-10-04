@@ -116,6 +116,8 @@ if (!D.meta.title) err("meta", "missing \"title\"");
 if (!D.meta.snapshotDate) err("meta", "missing \"snapshotDate\"");
 if (!D.meta.slidesFileId) warn("meta", "no slidesFileId — publishing will be skipped");
 
+require("./data").load(); // fails loudly on an unknown {{placeholder}}
+
 report();
 
 function report() {

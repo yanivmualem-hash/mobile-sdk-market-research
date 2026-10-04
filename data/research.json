@@ -24,7 +24,7 @@
       "palette": "orange"
     },
     {
-      "name": "Header Bidding",
+      "name": "SSP / Header Bidding",
       "palette": "gray"
     }
   ],
@@ -389,7 +389,7 @@
       "id": "amazon-aps",
       "order": 10,
       "name": "Amazon (Publisher Services: TAM/UAM)",
-      "category": "Header Bidding",
+      "category": "SSP / Header Bidding",
       "coreDifferentiator": "Exclusive access to Amazon's own advertiser demand pool via server-side header bidding.",
       "structuralWeakness": "In-app mobile footprint is smaller and far less documented than Amazon's web/header-bidding business.",
       "adFormats": "Banner, pre-roll/rewarded video — delivered via a lightweight APS SDK layered on partner ad-network SDKs",
@@ -486,6 +486,244 @@
         "sdkSize": true,
         "takeRate": false
       }
+    },
+    {
+      "id": "pubmatic-openwrap",
+      "order": 13,
+      "name": "PubMatic (OpenWrap SDK)",
+      "category": "SSP / Header Bidding",
+      "palette": "gray",
+      "tier": "challenger",
+      "coreDifferentiator": "A Prebid-based open in-app header-bidding wrapper from a public SSP — under 500KB, auctions resolved in under 200ms, and 200+ demand partners reached through direct buyer relationships rather than a network waterfall.",
+      "structuralWeakness": "Sells against the mediation incumbents while still needing to sit inside their stacks; the Google Ad Manager adapter remains labelled Beta, and in-app is a minority of PubMatic's overall revenue.",
+      "adFormats": "App Open, Banner, Interstitial, Rewarded, Rewarded Interstitial, Native",
+      "integrationModel": "Prebid-based client-side header bidding via the OpenWrap SDK, plus server-side 'parallel bidding' wrappers; also available as a bidding/waterfall adapter inside Google Ad Manager mediation.",
+      "platforms": "iOS, Android; adapters for Google Ad Manager and other mediation platforms",
+      "sdkSize": "Under 500 KB (vendor-stated)",
+      "reporting": "PubMatic platform analytics with log-level auction data",
+      "privacy": "GDPR, CCPA, IAB TCF and GPP support inherited from PubMatic's SSP compliance stack",
+      "positioning": "App publishers who want header-bidding mechanics and brand budgets rather than CPI-led network waterfalls",
+      "pricing": "No publisher take rate published; PubMatic monetises as an SSP on the media transaction",
+      "demandNetwork": "200+ demand partners including major exchanges and DSPs, with direct buyer relationships positioned for brand spend",
+      "proprietaryTech": "OpenWrap SDK (Prebid-based, sub-200ms auction) and a server-side parallel-bidding wrapper",
+      "marketShare": "Established public SSP; the in-app SDK is a growing line rather than the bulk of revenue",
+      "sources": "PubMatic OpenWrap product pages and case studies; Google Ad Manager mediation docs; PubMatic parallel-bidding blog",
+      "deck": {
+        "name": "PubMatic",
+        "tag": "SSP · OpenWrap SDK",
+        "blurb": "A Prebid-based in-app header-bidding wrapper from a public SSP. Under 500KB, auctions in under 200ms, 200+ demand partners, and direct buyer relationships aimed at brand budgets rather than CPI campaigns.",
+        "risk": "Sells against the mediation incumbents while needing to sit inside their stacks; the Ad Manager adapter is still Beta and in-app is a minority of revenue."
+      },
+      "disclosure": {
+        "adFormats": true,
+        "reporting": true,
+        "sdkSize": true,
+        "takeRate": false
+      }
+    },
+    {
+      "id": "ogury",
+      "order": 14,
+      "name": "Ogury",
+      "category": "SSP / Header Bidding",
+      "palette": "gray",
+      "tier": "challenger",
+      "coreDifferentiator": "Fully ID-less brand advertising via 'Personified Advertising' — targets aggregated personas from first-party and contextual signals instead of device identifiers, sold into manually vetted premium app inventory.",
+      "structuralWeakness": "Premium CPMs and manual inventory vetting cap scale, and the proposition is brand-first — performance buyers optimising to ROAS are not the target, which narrows the addressable budget.",
+      "adFormats": "Interstitial, opt-in and rewarded video, Banner, Thumbnail Ad; vertical and interactive video",
+      "integrationModel": "Proprietary publisher SDK plus header-bidding integrations; also available as an SDK bidder inside AppLovin MAX (all formats except Thumbnail) and via Google Ad Manager, Xandr and ironSource adapters.",
+      "platforms": "iOS, Android; adapters for AppLovin MAX, Google Ad Manager, Xandr, ironSource/Unity",
+      "sdkSize": "Not publicly disclosed",
+      "reporting": "Ogury One — persona planning, multi-format campaign setup and real-time performance monitoring",
+      "privacy": "ID-less by design; signal-based first-party and contextual targeting, positioned as privacy-first ahead of regulation",
+      "positioning": "Brand advertisers and premium app publishers wanting brand budgets without device identifiers",
+      "pricing": "Not publicly disclosed; monetises on the media transaction at CPM premiums over open exchange",
+      "demandNetwork": "Direct brand and agency demand, plus header-bidding and mediation integrations into the major stacks",
+      "proprietaryTech": "Personified Advertising (persona-level ID-less targeting); the Ogury One planning platform",
+      "marketShare": "~$170M revenue (2025, per Rise Session 1 research); 10,000+ manually vetted premium apps",
+      "sources": "Ogury publisher help centre and SDK docs; Ogury One product pages; Rise Session 1 research memo (June 2026)",
+      "deck": {
+        "name": "Ogury",
+        "tag": "SSP · ID-less brand",
+        "blurb": "Fully ID-less brand advertising. 'Personified Advertising' targets aggregated personas from first-party and contextual signals instead of device IDs, sold into 10,000+ manually vetted premium apps.",
+        "risk": "Premium CPMs and manual vetting cap scale, and it is brand-first — performance buyers optimising to ROAS are not the target."
+      },
+      "disclosure": {
+        "adFormats": true,
+        "reporting": true,
+        "sdkSize": false,
+        "takeRate": false
+      }
+    },
+    {
+      "id": "magnite",
+      "order": 15,
+      "name": "Magnite",
+      "category": "SSP / Header Bidding",
+      "palette": "gray",
+      "tier": "challenger",
+      "coreDifferentiator": "The largest independent sell-side company, and as of 2025–26 one of the few with a dedicated in-app SDK built specifically to carry premium brand demand into mobile apps with omnichannel measurement.",
+      "structuralWeakness": "Mobile in-app is a late addition to a business built on CTV and web; the SDK is new and its publisher footprint is far smaller than Magnite's overall scale would suggest.",
+      "adFormats": "Brand-safe display and video formats via the in-app SDK; full omnichannel format support across the wider platform",
+      "integrationModel": "In-app SDK giving direct access to prioritised premium demand, alongside Magnite's exchange, DV+ and private-marketplace deal infrastructure.",
+      "platforms": "iOS, Android",
+      "sdkSize": "Not publicly disclosed — described only as 'lightweight'",
+      "reporting": "Transparency into how ads are served and monetised; omnichannel measurement across the Magnite platform",
+      "privacy": "Supports privacy and compliance requirements across regions, inheriting Magnite's SSP compliance stack",
+      "positioning": "Premium app publishers wanting brand budgets and PMP deals rather than performance network demand",
+      "pricing": "Not publicly disclosed",
+      "demandNetwork": "Magnite brand and agency demand via DV+ and private marketplaces; a February 2026 New York Times Advertising collaboration made DV+ its preferred PMP platform for in-app supply",
+      "proprietaryTech": "A dedicated in-app SDK for brand-safe mobile formats; DV+ and omnichannel measurement",
+      "marketShare": "World's largest independent sell-side company; the in-app SDK footprint is new and not separately disclosed",
+      "sources": "Magnite in-app SDK help centre and blog; Unity x Magnite Q&A; Barchart coverage of the NYT Advertising collaboration (Feb 2026)",
+      "deck": {
+        "name": "Magnite",
+        "tag": "SSP · in-app SDK",
+        "blurb": "The largest independent sell-side company, now with a dedicated in-app SDK built to carry premium brand demand into apps. NYT Advertising made its DV+ the preferred PMP platform for in-app supply in Feb 2026.",
+        "risk": "In-app is a late addition to a CTV and web business; the SDK is new and its publisher footprint is far smaller than Magnite's overall scale."
+      },
+      "disclosure": {
+        "adFormats": true,
+        "reporting": true,
+        "sdkSize": false,
+        "takeRate": false
+      }
+    },
+    {
+      "id": "verve",
+      "order": 16,
+      "name": "Verve (PubNative / HyBid)",
+      "category": "SSP / Header Bidding",
+      "palette": "gray",
+      "tier": "challenger",
+      "coreDifferentiator": "Ranked North America’s top mobile SSP on both app stores by Pixalate, running an open-source SDK (HyBid 3.0) that connects 150+ brand and performance DSPs on any bidding or mediation platform. Also owns Smaato, so the group position is larger than the Verve brand alone suggests.",
+      "structuralWeakness": "Scale is assembled from acquisitions — PubNative, Smaato, and AppMonet’s SDK header-bidding business — rather than one architecture, and open-sourcing the SDK invites the same commoditisation it exploits.",
+      "adFormats": "Banner, interstitial, rewarded, native and video across mobile and CTV",
+      "integrationModel": "HyBid SDK 3.0 — open-source and modular, works on any bidding or mediation platform — plus the PubNative in-app marketplace and SSP.",
+      "platforms": "iOS, Android, CTV; source published on GitHub",
+      "sdkSize": "Not publicly disclosed; modular, so publishers include only the components they use",
+      "reporting": "Publisher reporting via the Verve/PubNative platform, with SDK data and security practices inspectable through open source",
+      "privacy": "Privacy-centric by design: complies with regional and OEM-enforced rules, supports iOS SKAdNetwork and privacy manifests, and is a beta partner for Android Privacy Sandbox",
+      "positioning": "Mobile and CTV publishers wanting an open, inspectable SDK carrying both brand and performance DSP demand",
+      "pricing": "Not publicly disclosed",
+      "demandNetwork": "150+ brand and performance DSPs; the PubNative marketplace reported 256% revenue growth on Amazon Publisher Services over 18 months (vendor-stated)",
+      "proprietaryTech": "HyBid SDK 3.0, open-sourced on GitHub; the PubNative in-app marketplace",
+      "marketShare": "Pixalate SSP Market Share Report ranks Verve North America's top mobile SSP on both the Apple App Store and Google Play, held for multiple consecutive quarters",
+      "sources": "Verve HyBid SDK 3.0 announcement and integration centre; Verve press releases on the AppMonet and Smaato acquisitions; Pixalate SSP Market Share Report",
+      "deck": {
+        "name": "Verve",
+        "tag": "SSP · open-source SDK",
+        "blurb": "North America's top mobile SSP on both app stores per Pixalate, running HyBid 3.0 — an open-source, modular SDK connecting 150+ brand and performance DSPs on any bidding or mediation platform.",
+        "risk": "Scale is assembled from acquisitions — PubNative, Smaato, AppMonet — rather than one architecture, and open-sourcing the SDK invites the commoditisation it exploits."
+      },
+      "disclosure": {
+        "adFormats": true,
+        "reporting": true,
+        "sdkSize": false,
+        "takeRate": false
+      }
+    },
+    {
+      "id": "moloco",
+      "order": 17,
+      "name": "Moloco",
+      "category": "DSP",
+      "palette": "teal",
+      "tier": "flywheel",
+      "coreDifferentiator": "A machine-learning DSP that has added its own publisher SDK, so the CARA model now trains on supply it owns as well as the demand it buys — the flywheel architecture, assembled by an independent with no mediation platform of its own.",
+      "structuralWeakness": "The same structural conflict as AppLovin and Liftoff is now forming here: a DSP that also owns supply. Publisher adoption of roughly 500 apps is an order of magnitude below the mediation incumbents.",
+      "adFormats": "Banner, interstitial, rewarded and native; publishers retain creative rendering control",
+      "integrationModel": "Publisher SDK letting advertisers bid directly on inventory, certified as a bidding partner inside AppLovin MAX, Unity LevelPlay, Google AdMob and Ad Manager SDK bidding, and across the Nimbus publisher base.",
+      "platforms": "iOS, Android",
+      "sdkSize": "Not publicly disclosed",
+      "reporting": "Moloco platform reporting with ARPDAU and auction-level performance data",
+      "privacy": "Operates on first-party data signals; consent handled through the host mediation platform",
+      "positioning": "App publishers wanting direct performance-advertiser demand in the auction, and advertisers buying on first-party data",
+      "pricing": "No margin fees — Moloco states cost savings are passed directly to ecosystem partners",
+      "demandNetwork": "Moloco's global direct advertiser demand; a certified bidder across MAX, LevelPlay, AdMob, Ad Manager and Nimbus",
+      "proprietaryTech": "CARA (Compound Ad Recommendation Architecture) — deep neural networks making billions of bidding decisions daily",
+      "marketShare": "Passed a $1B annual revenue run-rate in early 2026 and holds leading independent-DSP share in gaming and commerce; fastest-growing ad network of 2025 by net new SDK integrations (AppGoblin), with roughly 500 publishers",
+      "sources": "Moloco SDK product pages and press releases; BusinessWire (July 2025) on AdMob/Ad Manager availability; Nimbus partner page; AppGoblin 2025 report",
+      "deck": {
+        "name": "Moloco",
+        "tag": "DSP · own publisher SDK",
+        "blurb": "An ML-first DSP that added its own publisher SDK, so CARA now trains on supply it owns as well as demand it buys. Passed a $1B revenue run-rate in early 2026; fastest-growing ad network of 2025 by new SDK integrations.",
+        "risk": "The same conflict as AppLovin and Liftoff is forming here, and ~500 publishers is an order of magnitude below the mediation incumbents."
+      },
+      "disclosure": {
+        "adFormats": true,
+        "reporting": true,
+        "sdkSize": false,
+        "takeRate": true
+      }
+    },
+    {
+      "id": "mintegral",
+      "order": 18,
+      "name": "Mintegral (Mobvista)",
+      "category": "Demand-Side / Bidder",
+      "palette": "purple",
+      "tier": "adjacent",
+      "coreDifferentiator": "One of the most widely installed demand adapters in the category — present in roughly 18% of App Store apps using mediation — with particular depth in Chinese-origin gaming demand through parent Mobvista.",
+      "structuralWeakness": "Functions as a demand source inside other platforms' auctions rather than as a mediator, so it controls neither the publisher relationship nor the auction, and discloses little about fees or footprint.",
+      "adFormats": "App Open, Banner, Interstitial, Rewarded, Rewarded Interstitial, Native",
+      "integrationModel": "SDK bidding and waterfall adapters inside AppLovin MAX, Google AdMob and Ad Manager, Unity LevelPlay and others; bidding across all formats from adapter 16.5.91.1 onwards.",
+      "platforms": "iOS, Android, Unity",
+      "sdkSize": "Not publicly disclosed",
+      "reporting": "Mintegral publisher platform reporting; secure signals support within Google mediation",
+      "privacy": "Consent passed through the host mediation platform; GDPR and CCPA handling via adapter configuration",
+      "positioning": "Publishers and advertisers wanting access to global and Chinese-origin gaming demand",
+      "pricing": "Not publicly disclosed",
+      "demandNetwork": "Mintegral's global advertiser demand via Mobvista, integrated with 10,000+ publishers including Voodoo, Azur Games and CrazyLabs",
+      "proprietaryTech": "Mobvista's targeting and creative-optimisation stack behind the Mintegral network",
+      "marketShare": "Mediation adapter present in ~17.7% of App Store apps using ad mediation (~49% of downloads) and ~5.7% on Google Play (~21% of downloads), per 42matters",
+      "sources": "Google AdMob and Ad Manager Mintegral mediation docs; 42matters SDK analysis; BusinessWire",
+      "deck": {
+        "name": "Mintegral",
+        "tag": "Demand-side · Mobvista",
+        "blurb": "One of the most widely installed demand adapters in the category — in ~17.7% of App Store apps using mediation, ~49% of downloads — with depth in Chinese-origin gaming demand via parent Mobvista.",
+        "risk": "A demand source inside others' auctions rather than a mediator, so it controls neither the publisher relationship nor the auction, and discloses little."
+      },
+      "disclosure": {
+        "adFormats": true,
+        "reporting": true,
+        "sdkSize": false,
+        "takeRate": false
+      }
+    },
+    {
+      "id": "smaato",
+      "order": 19,
+      "name": "Smaato (Verve Group)",
+      "category": "SSP / Header Bidding",
+      "palette": "gray",
+      "tier": "adjacent",
+      "coreDifferentiator": "A single-point integration combining an RTB exchange (SMX) with a publisher-side mediation layer. Owned by Verve Group since 2021, so its scale is not independent of Verve’s — the two are one corporate position, not two.",
+      "structuralWeakness": "Sits between the larger SSPs and the mediation platforms without a clear technical moat, and since the Verve acquisition its strategic direction and product investment are not separately disclosed.",
+      "adFormats": "Banner, video, native, rich media, rewarded",
+      "integrationModel": "Publisher SDK with all-in-one mediation and bidding — header-bidding capability plus custom waterfall tiers and priorities, through one integration into the SMX exchange.",
+      "platforms": "iOS, Android",
+      "sdkSize": "Not publicly disclosed",
+      "reporting": "Publisher platform reporting; dynamic demand ad server",
+      "privacy": "GDPR and CCPA support with standard IAB consent framework handling",
+      "positioning": "Publishers wanting one integration covering both exchange demand and a mediation layer",
+      "pricing": "Not publicly disclosed",
+      "demandNetwork": "Smaato Exchange (SMX) — vendor-stated reach of ~450 million unique users across 130 countries, serving 90+ billion impressions per month",
+      "proprietaryTech": "SMX exchange with an integrated SSP and mediation layer behind a single integration",
+      "marketShare": "Mid-tier global SSP. Acquired by Verve Group (Media and Games Invest) in July 2021 at a $170M enterprise value; no independent post-acquisition share figure found.",
+      "sources": "Smaato SDK integration centre; Verve Group / MGI acquisition announcement (July 2021); ExchangeWire and AdExchanger coverage; Publift and MonetizeMore comparisons",
+      "deck": {
+        "name": "Smaato",
+        "tag": "SSP · Verve-owned",
+        "blurb": "An RTB exchange (SMX) plus a publisher-side mediation layer in one integration, with vendor-stated 90B+ monthly impressions. Verve has owned it since 2021, so read its scale as part of Verve’s rather than additional to it.",
+        "risk": "No clear technical moat between the larger SSPs and the mediation platforms, and post-acquisition direction is not separately disclosed."
+      },
+      "disclosure": {
+        "adFormats": true,
+        "reporting": true,
+        "sdkSize": false,
+        "takeRate": false
+      }
     }
   ],
   "valueThemes": [
@@ -523,7 +761,7 @@
       "order": 6,
       "title": "Lightweight footprint / low integration cost",
       "who": "Chartboost (<340KB), Vungle/Liftoff Monetize (<1MB Android), CloudX (AI-agent automated integration)",
-      "note": "Only 3 of 12 vendors publish real footprint numbers or make integration speed a differentiator — most don't disclose this at all."
+      "note": "Only {{disclosed.sdkSize}} of {{total}} vendors publish real footprint numbers or make integration speed a differentiator — most don't disclose this at all."
     }
   ],
   "problems": [
@@ -531,37 +769,37 @@
       "order": 1,
       "status": "open",
       "title": "Self-preferencing / conflict of interest in the auction",
-      "solvedBy": "CloudX (structurally, by design)",
-      "note": "AppLovin, Unity, Google, and Liftoff/Vungle all run their own demand inside the same auction they operate as mediator — a structural issue, not a technical one. Only a non-competing operator can credibly avoid it.",
+      "solvedBy": "CloudX (verifiable by design); Magnite, Verve/Smaato and PubMatic are sell-side only, so non-conflicted by structure rather than by proof",
+      "note": "AppLovin, Unity, Google and Liftoff/Vungle all run their own demand inside the auction they operate, and Moloco is now building the same loop. Structural, not technical — only a non-competing operator can credibly avoid it, and only CloudX lets a buyer verify it.",
       "shortTitle": "Auction self-preferencing",
-      "shortSolvedBy": "CloudX only, by design"
+      "shortSolvedBy": "CloudX, plus the sell-side-only SSPs"
     },
     {
       "order": 2,
       "status": "partial",
       "title": "Opaque auction mechanics & fee disclosure",
-      "solvedBy": "Chartboost (no demand fee to bidders), CloudX (unified take rate + public auction code)",
-      "note": "Publisher take rates are undisclosed by the vendor itself for 10 of the 12 SDKs tracked here.",
+      "solvedBy": "Chartboost (no demand fee to bidders), CloudX (unified take rate + public auction code), Moloco (states no margin fees)",
+      "note": "Publisher take rates are undisclosed by the vendor itself for {{undisclosed.takeRate}} of the {{total}} SDKs tracked here.",
       "shortTitle": "Auction & fee transparency",
-      "shortSolvedBy": "Chartboost · CloudX"
+      "shortSolvedBy": "Chartboost · CloudX · Moloco"
     },
     {
       "order": 3,
       "status": "partial",
       "title": "Brand & omnichannel demand locked out of in-app inventory",
-      "solvedBy": "Chartboost Direct (LoopMe), CloudX (omnichannel DSP access), Amazon TAM/UAM",
-      "note": "The single biggest live opportunity in this market. Three independent 2025–2026 attempts at the same fix — none yet at meaningful scale.",
+      "solvedBy": "Chartboost Direct, CloudX, Amazon TAM/UAM, Magnite, Ogury, PubMatic — six approaches, none at scale",
+      "note": "The biggest live opportunity in this market, and now the most crowded: six vendors attacking it from different directions, none yet at meaningful scale in-app.",
       "shortTitle": "Brand / omnichannel demand",
-      "shortSolvedBy": "Chartboost Direct · CloudX · Amazon"
+      "shortSolvedBy": "6 vendors, none yet at scale"
     },
     {
       "order": 4,
       "status": "open",
       "title": "No cross-app deduplicated reach/frequency currency for brand planning",
-      "solvedBy": "None of the 12",
+      "solvedBy": "None of the {{total}}",
       "note": "No mediation SDK here does cross-publisher identity resolution for advertiser planning purposes. This is the clearest whitespace in the whole category.",
       "shortTitle": "Cross-app reach currency",
-      "shortSolvedBy": "None of the 12"
+      "shortSolvedBy": "None of the {{total}}"
     },
     {
       "order": 5,
@@ -576,10 +814,10 @@
       "order": 6,
       "status": "solved",
       "title": "Privacy / consent handling (GDPR, CCPA, ATT, COPPA)",
-      "solvedBy": "Nearly all 12, to varying depth",
+      "solvedBy": "Nearly all {{total}}, to varying depth",
       "note": "Baseline table stakes across the industry now. The remaining differentiation is depth, not existence.",
       "shortTitle": "Privacy & consent handling",
-      "shortSolvedBy": "Nearly all 12, to varying depth"
+      "shortSolvedBy": "Nearly all {{total}}, to varying depth"
     },
     {
       "order": 7,
@@ -594,10 +832,10 @@
       "order": 8,
       "status": "open",
       "title": "Ad fraud / IVT verification built into the SDK itself",
-      "solvedBy": "Not directly addressed by any of the 12 in sources reviewed",
+      "solvedBy": "Not directly addressed by any of the {{total}} in sources reviewed",
       "note": "Fraud/IVT verification is still treated as an external, bolted-on layer rather than a native part of any mediation SDK examined here.",
       "shortTitle": "Native fraud / IVT checks",
-      "shortSolvedBy": "None of the 12"
+      "shortSolvedBy": "None of the {{total}}"
     },
     {
       "order": 9,
@@ -615,7 +853,7 @@
       "authorName": "Claude (research)"
     },
     {
-      "text": "Open thread: the defensible \"added value\" for a new SSP-built SDK looks like (1) verifiable non-conflicted auction (CloudX is the precedent) and (2) closing the brand-currency gap (native pre-bid verification + cross-app deduplicated reach/frequency + curated deal-ID tier). Neither is fully solved by any of the 12 yet.",
+      "text": "Open thread: the defensible \"added value\" for a new SSP-built SDK looks like (1) verifiable non-conflicted auction (CloudX is the precedent) and (2) closing the brand-currency gap (native pre-bid verification + cross-app deduplicated reach/frequency + curated deal-ID tier). Neither is fully solved by any of the {{total}} yet.",
       "authorName": "Claude (research)"
     }
   ],

@@ -8,7 +8,7 @@ const pptxgen = require("pptxgenjs");
 const T = require("./theme");
 
 const ROOT = path.resolve(__dirname, "..");
-const D = JSON.parse(fs.readFileSync(path.join(ROOT, "data/research.json"), "utf8"));
+const D = require("./data").load();
 const N = D.narrative;
 
 const { RISE, INK, MUTED, FAINT, BORDER, FILL, FILL2, CALM, WHITE, PAIRS, HFONT, BFONT } = T;
@@ -47,6 +47,20 @@ function pill(s, x, y, w, h, pair, text, size) {
 }
 // pill sized to its label (Roboto bold caps ≈ 0.075in per char at 9pt)
 const pillW = (text, size) => Math.max(0.7, text.length * (size || 9) * 0.0084 + 0.34);
+
+// Largest point size at which `text` still fits a w x h inch box. Column widths
+// shrink as vendors are added, so picking this per card is what keeps the deck
+// from clipping copy the way a fixed size would.
+function fitSize(text, w, h, maxPt, minPt) {
+  const CHAR_EM = 0.52;   // mean Roboto advance width, slightly conservative
+  const LEAD = 1.3;       // line height multiple
+  for (let pt = maxPt; pt >= minPt; pt -= 0.5) {
+    const charsPerLine = Math.max(1, Math.floor(w / (CHAR_EM * pt / 72)));
+    const lines = Math.ceil(String(text).length / charsPerLine);
+    if (lines * (LEAD * pt / 72) <= h) return pt;
+  }
+  return minPt;
+}
 
 function heading(s, eyebrow, title, sub) {
   if (eyebrow) s.addText(String(eyebrow).toUpperCase(), {
@@ -357,16 +371,25 @@ divider("Part two", "The players",
 N.tiers.forEach((tier) => {
   const members = tierMembers(tier.id);
   if (!members.length) return;
+  // balance the pages rather than filling the first: 5 members reads better
+  // as 3 + 2 than as 4 + 1, which leaves a lone card on an empty slide
   const MAXC = 4;
-  for (let page = 0; page * MAXC < members.length; page++) {
-    const group = members.slice(page * MAXC, (page + 1) * MAXC);
+  const pages = Math.ceil(members.length / MAXC);
+  const per = Math.ceil(members.length / pages);
+  for (let page = 0; page * per < members.length; page++) {
+    const group = members.slice(page * per, (page + 1) * per);
     const s = lightSlide();
     heading(s, tier.eyebrow, tier.title + (page ? " (cont.)" : ""), tier.sub);
     const gap = 0.32;
     const cwid = (CW - gap * (group.length - 1)) / group.length;
     const dense = group.length >= 4;
-    const bodySize = dense ? 10 : 11;
-    const lead = dense ? 13 : 14.5;
+    const textW = cwid - 0.52, riskW = cwid - 0.84;
+    // size the body copy to the narrowest card on this slide, so all cards match
+    const bodySize = Math.min.apply(null, group.map((p) =>
+      fitSize(p.deck.blurb, textW, 1.5, dense ? 10 : 11, 8)));
+    const lead = bodySize * 1.3;
+    const riskSize = Math.min.apply(null, group.map((p) =>
+      fitSize(p.deck.risk, riskW, 0.84, dense ? 9.5 : 10, 7.5)));
     group.forEach((p, i) => {
       const x = M + i * (cwid + gap);
       const pair = catPair(p.category);
@@ -387,8 +410,8 @@ N.tiers.forEach((tier) => {
         fontFace: BFONT, fontSize: 8.5, bold: true, charSpacing: 1.1, color: PAIRS.red.fg,
       });
       s.addText(p.deck.risk, {
-        x: x + 0.42, y: 5.24, w: cwid - 0.84, h: 0.84, isTextBox: true, margin: 0,
-        fontFace: BFONT, fontSize: dense ? 9.5 : 10, color: PAIRS.red.fg, lineSpacing: dense ? 12 : 13, valign: "top",
+        x: x + 0.42, y: 5.24, w: riskW, h: 0.84, isTextBox: true, margin: 0,
+        fontFace: BFONT, fontSize: riskSize, color: PAIRS.red.fg, lineSpacing: riskSize * 1.3, valign: "top",
       });
     });
     footnote(s, tier.footnote);
@@ -400,14 +423,22 @@ N.tiers.forEach((tier) => {
 // ADJACENT PLAYS
 // =====================================================================
 {
-  const members = tierMembers("adjacent");
-  if (members.length) {
+  const all = tierMembers("adjacent");
+  const MAXROWS = 6;             // past this the rows get too short for the copy
+  const pageCount = Math.ceil(all.length / MAXROWS) || 1;
+  const perPage = Math.ceil(all.length / pageCount);
+  for (let page = 0; page * perPage < all.length; page++) {
+    const members = all.slice(page * perPage, (page + 1) * perPage);
+    if (!members.length) break;
     const c = N.adjacent;
     const s = lightSlide();
-    heading(s, c.eyebrow, c.title, c.sub);
+    heading(s, c.eyebrow, c.title + (page ? " (cont.)" : ""), c.sub);
     const avail = 4.7;
     const rowH = Math.min(0.86, (avail - 0.12 * (members.length - 1)) / members.length);
-    let y = 2.02;
+    // a continuation page holds fewer rows at full height, so centre the block
+    // vertically rather than leaving all the slack at the bottom
+    const used = members.length * rowH + 0.12 * (members.length - 1);
+    let y = 2.02 + Math.max(0, (avail - used) / 2);
     members.forEach((p) => {
       const pair = catPair(p.category);
       card(s, M, y, CW, rowH, { radius: R_ROW });
