@@ -1,0 +1,13 @@
+{
+  "name": "rise-mobile-sdk-market-research",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Single-source research data -> Rise-themed HTML dashboard + Google Slides deck",
+  "scripts": {
+    "build": "./build.sh --local",
+    "publish": "./build.sh",
+    "verify": "./build.sh --verify",
+    "watch": "./build.sh --watch"
+  },
+  "dependencies": { "pptxgenjs": "^4.0.1" }
+}

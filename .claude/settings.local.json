@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh api *)",
+      "Bash(gcloud auth *)",
+      "Bash(curl -s -H 'Authorization: Bearer __TRACKED_VAR__' 'https://www.googleapis.com/drive/v3/files/__TRACKED_VAR__/permissions?fields=permissions\\(id,type,role,emailAddress,domain\\)')",
+      "Bash(python3 -m json.tool)"
+    ]
+  }
+}

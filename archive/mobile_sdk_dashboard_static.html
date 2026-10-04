@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mobile SDK Market Research — Snapshot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F6F8; --surface: #FFFFFF; --surface-2: #FBFBFC;
+    --ink: #171A1F; --ink-soft: #4B5058; --muted: #767C87;
+    --line: #E3E5EA; --line-strong: #CBCFD6;
+    --accent: #3B49DF; --accent-soft: #EAEBFB;
+    --accent-2: #0E7C66; --accent-2-soft: #E4F3EF;
+    --warn: #B0590C; --warn-soft: #FBEDDE;
+    --cat-mediation: #3B49DF; --cat-demand: #7C3AED; --cat-dsp: #0E7C66;
+    --cat-device: #B0590C; --cat-header: #B23A6B;
+    --status-solved: #0E7C66; --status-solved-soft: #E4F3EF;
+    --status-partial: #B0590C; --status-partial-soft: #FBEDDE;
+    --status-open: #B23A3A; --status-open-soft: #FBE7E7;
+    --radius: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #13151B; --surface: #1B1E26; --surface-2: #1F222B;
+      --ink: #E9EBEF; --ink-soft: #C2C6CE; --muted: #8A8F99;
+      --line: #2C2F3A; --line-strong: #3B3F4C;
+      --accent: #7C86FF; --accent-soft: #262A45;
+      --accent-2: #3FBFA0; --accent-2-soft: #1B322C;
+      --warn: #E0A542; --warn-soft: #362A16;
+      --cat-mediation: #7C86FF; --cat-demand: #B39CFF; --cat-dsp: #3FBFA0;
+      --cat-device: #E0A542; --cat-header: #E17DA6;
+      --status-solved: #3FBFA0; --status-solved-soft: #1B322C;
+      --status-partial: #E0A542; --status-partial-soft: #362A16;
+      --status-open: #E88787; --status-open-soft: #3A2222;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px; line-height: 1.5;
+  }
+  h1, h2, h3 { font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif; letter-spacing: -0.01em; }
+  a { color: var(--accent); }
+  .shell { max-width: 1280px; margin: 0 auto; padding: 28px 24px 80px; }
+
+  header.top {
+    display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+    gap: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--line); margin-bottom: 20px;
+  }
+  header.top h1 { font-size: 26px; font-weight: 600; margin: 0 0 4px; }
+  header.top p { margin: 0; color: var(--muted); font-size: 13.5px; max-width: 620px; }
+  .snapshot-badge {
+    font-size: 11.5px; color: var(--muted); border: 1px solid var(--line-strong);
+    border-radius: 20px; padding: 5px 12px; white-space: nowrap;
+  }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 18px; }
+  .search { flex: 1 1 220px; }
+  .search input {
+    width: 100%; padding: 9px 12px; border: 1px solid var(--line-strong); border-radius: 9px;
+    background: var(--surface); color: var(--ink); font-size: 13.5px; font-family: inherit;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    padding: 6px 12px; border-radius: 20px; border: 1px solid var(--line-strong);
+    background: var(--surface); color: var(--ink-soft); font-size: 12.5px; cursor: pointer;
+    font-family: inherit; white-space: nowrap;
+  }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .layout { display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+  @media (max-width: 920px) { .layout { grid-template-columns: 1fr; } }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+
+  .synthesis { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  @media (max-width: 920px) { .synthesis { grid-template-columns: 1fr; } }
+  .synthesis .panel h2 { font-size: 16px; }
+  .synthesis .panel .sub { margin-bottom: 14px; }
+  .theme-item { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .theme-item:last-child { border-bottom: none; }
+  .theme-item h4 { margin: 0 0 3px; font-size: 13.5px; font-weight: 600; }
+  .theme-item p { margin: 0; font-size: 12.5px; color: var(--ink-soft); line-height: 1.45; }
+  .theme-item .who { color: var(--accent); font-weight: 500; }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10.5px; font-weight: 500; padding: 3px 9px; border-radius: 20px; white-space: nowrap;
+  }
+  .status-badge.solved { color: var(--status-solved); background: var(--status-solved-soft); }
+  .status-badge.partial { color: var(--status-partial); background: var(--status-partial-soft); }
+  .status-badge.open { color: var(--status-open); background: var(--status-open-soft); }
+  .problem-item { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .problem-item:last-child { border-bottom: none; }
+  .problem-item .prow { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .problem-item h4 { margin: 0; font-size: 13.5px; font-weight: 600; flex: 1; }
+  .problem-item p { margin: 0; font-size: 12.5px; color: var(--ink-soft); line-height: 1.45; }
+  .problem-item .who { color: var(--muted); font-size: 11.5px; margin-top: 3px; }
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; font-size: 11px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend .swatch { width: 8px; height: 8px; border-radius: 50%; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--cat-mediation);
+    border-radius: var(--radius); padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .card[data-cat="Demand-Side / Bidder"] { border-left-color: var(--cat-demand); }
+  .card[data-cat="DSP"] { border-left-color: var(--cat-dsp); }
+  .card[data-cat="On-Device Distribution"] { border-left-color: var(--cat-device); }
+  .card[data-cat="Header Bidding"] { border-left-color: var(--cat-header); }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .card-top h3 { margin: 0; font-size: 16.5px; font-weight: 600; }
+  .cat-badge {
+    font-size: 10.5px; font-weight: 500; padding: 3px 8px; border-radius: 20px; white-space: nowrap;
+    flex: none; color: #fff; background: var(--cat-mediation);
+  }
+  .card[data-cat="Demand-Side / Bidder"] .cat-badge { background: var(--cat-demand); }
+  .card[data-cat="DSP"] .cat-badge { background: var(--cat-dsp); }
+  .card[data-cat="On-Device Distribution"] .cat-badge { background: var(--cat-device); }
+  .card[data-cat="Header Bidding"] .cat-badge { background: var(--cat-header); }
+  .diff-line { font-size: 13.5px; color: var(--ink-soft); margin: 0; line-height: 1.45; }
+  .weak-line {
+    display: flex; gap: 7px; align-items: flex-start; font-size: 12.5px; color: var(--warn);
+    background: var(--warn-soft); border-radius: 8px; padding: 7px 9px; margin: 0;
+  }
+  .weak-line .wdot { width: 6px; height: 6px; border-radius: 50%; background: var(--warn); margin-top: 5px; flex: none; }
+  .card-foot {
+    display: flex; justify-content: space-between; align-items: center; margin-top: auto;
+    padding-top: 8px; border-top: 1px solid var(--line);
+  }
+  .card-foot .meta { font-size: 11.5px; color: var(--muted); }
+  .link-btn { background: none; border: none; color: var(--accent); font-family: inherit; font-size: 12.5px; cursor: pointer; padding: 4px 6px; }
+  .empty { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--muted); border: 1px dashed var(--line-strong); border-radius: var(--radius); }
+
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
+  .panel h2 { font-size: 14.5px; margin: 0 0 4px; }
+  .panel .sub { color: var(--muted); font-size: 12px; margin: 0 0 12px; }
+  .stat-row { display: flex; justify-content: space-between; font-size: 12.5px; padding: 5px 0; border-bottom: 1px solid var(--line); }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row span:first-child { color: var(--muted); }
+  .note-list { display: flex; flex-direction: column; gap: 12px; }
+  .note-item { font-size: 12.5px; border-left: 2px solid var(--line-strong); padding-left: 10px; }
+  .note-item .note-text { color: var(--ink); margin: 0 0 3px; white-space: pre-wrap; }
+  .note-item .note-meta { color: var(--muted); font-size: 11px; }
+
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(10,11,14,.45); display: flex; align-items: flex-start;
+    justify-content: center; padding: 40px 16px; overflow-y: auto; z-index: 50;
+  }
+  .modal { background: var(--surface); border-radius: var(--radius); max-width: 640px; width: 100%; padding: 22px; border: 1px solid var(--line); }
+  .modal h3 { margin: 0; font-size: 21px; }
+  .modal dt { font-size: 11.5px; font-weight: 600; color: var(--muted); margin-top: 14px; }
+  .modal dt:first-of-type { margin-top: 4px; }
+  .modal dd { margin: 3px 0 0; font-size: 13.5px; color: var(--ink-soft); }
+  .close-x { background: none; border: none; font-size: 20px; line-height: 1; color: var(--muted); cursor: pointer; padding: 2px 6px; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <div>
+      <h1>Mobile In-App SDK Market Research</h1>
+      <p>Static snapshot — technical capabilities, differentiators, and proprietary tech for the mediation, bidding, and demand-side SDK landscape.</p>
+    </div>
+    <span class="snapshot-badge" id="snapshot-date"></span>
+  </header>
+
+  <div class="toolbar">
+    <div class="search"><input type="text" id="search-input" placeholder="Search SDKs, tech, or differentiators…" aria-label="Search SDKs"></div>
+    <div class="chips" id="category-chips" role="group" aria-label="Filter by category"></div>
+  </div>
+
+  <div class="synthesis">
+    <div class="panel">
+      <h2>Added value at a glance</h2>
+      <p class="sub">What each cluster of SDKs actually contributes, grouped by the kind of value it adds.</p>
+      <div id="value-themes-body"></div>
+    </div>
+    <div class="panel">
+      <h2>Industry problems: what's already solved</h2>
+      <p class="sub">Known pain points in the in-app mediation market, and whether any of the 12 SDKs tracked here actually solve them.</p>
+      <div id="problems-body"></div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--status-solved);"></span>Solved</span>
+        <span><span class="swatch" style="background:var(--status-partial);"></span>Partially solved</span>
+        <span><span class="swatch" style="background:var(--status-open);"></span>Open gap</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <main><div class="grid" id="sdk-grid"></div></main>
+    <aside>
+      <div class="panel">
+        <h2>Coverage</h2>
+        <p class="sub">Snapshot taken September 22, 2026.</p>
+        <div id="stats-body"></div>
+      </div>
+      <div class="panel" style="margin-top:16px;">
+        <h2>Research notes</h2>
+        <p class="sub">Read-only here. The live version accepts new notes and edits.</p>
+        <div class="note-list" id="note-list"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var SNAPSHOT_DATE = "2026-09-22";
+
+  var SDKS = [
+    {"id":"applovin-max","order":1,"name":"AppLovin MAX","category":"Mediation SDK",
+     "coreDifferentiator":"Runs a continuous multi-armed-bandit auction (Axon) that feeds both MAX (mediation) and AppDiscovery (AppLovin's own DSP) — a genuine data flywheel and the industry's largest mediation footprint.",
+     "structuralWeakness":"Runs its own demand inside the same auction it operates as mediator; has drawn sustained developer criticism and a disputed 2025 short-seller fraud allegation over related-party UA/mediation loops.",
+     "adFormats":"Banner (incl. MREC), Interstitial (incl. video), Rewarded video, Native",
+     "integrationModel":"Hybrid: unified real-time in-app bidding auction across 20+ SDK bidders plus 25+ waterfall networks, run through the Axon engine.",
+     "platforms":"iOS, Android, Unity, React Native, Flutter, Cocos2d",
+     "sdkSize":"Not publicly disclosed",
+     "reporting":"MAX Dashboard, Mediation Debugger, impression-level data, Axon AI yield optimization",
+     "privacy":"ATT, GDPR/EU consent APIs, US state privacy APIs; publisher responsible for CMP integration",
+     "positioning":"Mid-size to large publishers, especially gaming, with 100K+ DAU; dual-sided platform also serving advertisers via AppDiscovery",
+     "pricing":"Free to publishers; monetizes advertiser side. Sources disagree on the exact mechanism/rate — none authoritative, treat as approximate.",
+     "demandNetwork":"20+ SDK bidders and 25+ traditional ad networks in the unified auction",
+     "proprietaryTech":"Axon: continuous multi-armed-bandit auction optimization; every impression is a live learning opportunity feeding both MAX and AppDiscovery",
+     "marketShare":">80% mediation market share per mid-2026 sources (vs ~60% in 2024 estimates); FY2025 revenue $5.48B (+70% YoY)",
+     "sources":"AppLovin Support Center; Segwise; Playwire; The Register; Naavik"},
+
+    {"id":"unity-levelplay","order":2,"name":"ironSource / Unity LevelPlay","category":"Mediation SDK",
+     "coreDifferentiator":"Deepest Unity Editor/Cloud integration in the category; demand side is being rebuilt around Vector, a from-scratch neural-network ad engine using engine-level gameplay data no SDK-only competitor can see.",
+     "structuralWeakness":"Mid-restructuring: Unity discontinued the standalone ironSource Ads Network effective April 30, 2026, while LevelPlay mediation continues. Same self-preferencing critique as AppLovin/AdMob.",
+     "adFormats":"Rewarded, Interstitial, Banner, Native",
+     "integrationModel":"Hybrid: unified auction (bidding) plus waterfall, run natively inside the Unity Editor/dashboard.",
+     "platforms":"iOS, Android; deepest integration inside Unity Editor/Unity Cloud; usable outside Unity via native SDKs",
+     "sdkSize":"Not publicly disclosed",
+     "reporting":"LevelPlay dashboard, A/B testing, real-time monetization data",
+     "privacy":"GDPR consent methods, US state privacy, ATT",
+     "positioning":"Developers building in/alongside the Unity Editor; gaming-first, deep engine-level integration",
+     "pricing":"Not publicly disclosed",
+     "demandNetwork":"Unified auction across leading SDK networks and bidders; smaller top-game footprint than AppLovin",
+     "proprietaryTech":"Unity Vector: rebuilt neural-network ad engine, successor to 2021's Audience Pinpointer; fuses gameplay, monetization and campaign signals into one self-learning model",
+     "marketShare":"Unity FY2025 total company revenue $1.85B; LevelPlay is part of the restructured 'Strategic Grow' segment",
+     "sources":"Unity LevelPlay product page; Unity Investor Update Q1 2026; AdExchanger; Mobile Dev Memo; Naavik"},
+
+    {"id":"google-admob","order":3,"name":"Google AdMob","category":"Mediation SDK",
+     "coreDifferentiator":"Broadest platform support and the lowest barrier to entry; direct pipe into Google's own Search/Display advertiser demand that no independent SDK can access.",
+     "structuralWeakness":"Same self-preferencing critique as AppLovin/Unity — Google's own demand competes in the auction it operates. Not shown as the top platform by top-grossing-game share in third-party samples.",
+     "adFormats":"Banner, Interstitial, Rewarded, Native, App Open",
+     "integrationModel":"Hybrid: 'Open Bidding' real-time auction plus waterfall, unified via 'mediation groups'.",
+     "platforms":"iOS, Android, Unity, Flutter, React Native (Google Mobile Ads SDK plugins for all)",
+     "sdkSize":"Not publicly disclosed",
+     "reporting":"Ads Activity–Mediation reports, per-network/format breakdowns",
+     "privacy":"Must use a Google-certified CMP for GDPR/UK; US state privacy law support built into SDK setup flow",
+     "positioning":"Indie/small developers and anyone already in the Google Ads ecosystem; easiest on-ramp",
+     "pricing":"Not officially published; a widely cited 'up to 40%' figure comes from a third-party comparison, not Google.",
+     "demandNetwork":"Connects to essentially every major third-party network, backed by Google's own advertiser demand",
+     "proprietaryTech":"'Open Bidding' real-time auction infrastructure; deep integration with Google's broader ads ecosystem",
+     "marketShare":"Extremely broad adoption as a baseline/default SDK, especially among smaller publishers",
+     "sources":"Google AdMob Help Center; MonetizeMore; Teqblaze"},
+
+    {"id":"digital-turbine","order":4,"name":"Digital Turbine (DT Exchange / FairBid)","category":"On-Device Distribution",
+     "coreDifferentiator":"Not really a mediation play — SingleTap is a patented, one-tap install technology built on deep OEM/carrier device-level integrations, a multi-year relationship moat almost impossible to replicate.",
+     "structuralWeakness":"Small-partner concentration risk; comparing its 'market share' to mediation platforms isn't apples-to-apples — it's a different category entirely.",
+     "adFormats":"Banner, Interstitial, Rewarded video; native format limited/forthcoming per vendor docs",
+     "integrationModel":"Hybrid SDK bidding (OpenRTB) and waterfall via FairBid/DT Exchange SDK — but the real technology sits one layer below, in SingleTap device-level installs.",
+     "platforms":"iOS, Android, Unity",
+     "sdkSize":"Not publicly disclosed",
+     "reporting":"Dynamic Floor Pricing, User Signals API, Impression-Level Data",
+     "privacy":"GDPR, IAB Global Privacy Platform (GPP); frequent regional-law updates",
+     "positioning":"Publishers seeking OEM/carrier-level distribution alongside monetization",
+     "pricing":"Not publicly disclosed",
+     "demandNetwork":"Aggregates demand through FairBid/DT Exchange; also integrates into AppLovin MAX, Unity, and Chartboost",
+     "proprietaryTech":"SingleTap: one-tap install without app-store redirect (vendor-reported up to +200% conversion lift); Ignite Graph / DT iQ data engines",
+     "marketShare":"1B+ devices, 80,000+ apps reached via on-device integrations",
+     "sources":"Shareholdersunite; Digital Turbine; VideoWeek; PortersFiveForce"},
+
+    {"id":"chartboost-loopme","order":5,"name":"Chartboost Mediation","category":"Mediation SDK",
+     "coreDifferentiator":"Smallest SDK footprint in the category (<340KB) with a no-demand-fee pricing stance; since LoopMe's 2024 acquisition, now the supply-side entry point for 'Chartboost Direct'.",
+     "structuralWeakness":"Chartboost Direct is very new (April 2026); actual liquidity/adoption at scale isn't yet established in public sources.",
+     "adFormats":"Banner (incl. adaptive), Interstitial, Rewarded, Rewarded Interstitial, Native",
+     "integrationModel":"Hybrid: OpenRTB 2.5 first-price bidding auction plus waterfall.",
+     "platforms":"iOS, Android, Unity; also reachable as a mediated network inside AdMob, MAX, and other platforms",
+     "sdkSize":"<340 KB combined for iOS, Android, and Unity plug-in",
+     "reporting":"Analytics dashboard, bid-distribution-by-winning-bid data, Mediation Reporting API",
+     "privacy":"GDPR/US-state consent passed via SDK methods (e.g. addDataUseConsent())",
+     "positioning":"Indie and mid-size mobile game studios wanting a lightweight, transparent-bidding SDK",
+     "pricing":"No demand fees charged to bidding partners; winning bid equals publisher earnings.",
+     "demandNetwork":"Bidding + waterfall partners including AppLovin, AdMob/Google Bidding, InMobi, Digital Turbine Exchange, Liftoff Monetize",
+     "proprietaryTech":"'Chartboost Direct' (April 2026): Direct Pay, Direct Deals, Marketplace Deals — brand-agency programmatic demand on the existing SDK",
+     "marketShare":"Mid-tier player relative to AppLovin/Unity; strategically important as LoopMe's mobile supply entry point since 2024",
+     "sources":"Chartboost Documentation; ppc.land; Adweek"},
+
+    {"id":"vungle-liftoff-monetize","order":6,"name":"Vungle (Liftoff Monetize)","category":"Mediation SDK",
+     "coreDifferentiator":"Genuinely lightweight SDK (<1MB Android) architected as the exclusive supply-side data source for Liftoff's Cortex DSP.",
+     "structuralWeakness":"Same structural conflict as AppLovin/Unity: the SDK's edge comes substantially from feeding the DSP (Liftoff) that also owns it.",
+     "adFormats":"App Open, Banner, Interstitial, Rewarded, Rewarded Interstitial, Native",
+     "integrationModel":"Hybrid: in-app bidding plus waterfall.",
+     "platforms":"iOS, Android, Windows, Amazon Fire OS; Unity via mediation adapters",
+     "sdkSize":"<1 MB added on Android; ~5.12 MB added on iOS",
+     "reporting":"Liftoff Monetize Dashboard, reporting API",
+     "privacy":"GDPR consent handling built into SDK; ATT/COPPA-specific tooling not detailed — flagged unclear",
+     "positioning":"Gaming-heavy publishers; positioned as the lightweight monetization layer feeding Liftoff's UA business",
+     "pricing":"Not publicly disclosed",
+     "demandNetwork":"Compatible with 'all major mediation platforms'; feeds Liftoff's own Cortex UA engine with exclusive supply signals",
+     "proprietaryTech":"Liftoff Exclusive Ads (LXA); the Vungle Exchange gives Liftoff's DSP a claimed ~80% access to unique impressions on that exchange",
+     "marketShare":"Company states SDK integrated in '95% of top gaming apps'; per 2026 IPO S-1, combined SDK reaches 160,000+ apps and ~1.4B DAU",
+     "sources":"Liftoff Vungle SDK page; Vungle/Liftoff Help Center; BusinessWire; Liftoff 2026 S-1"},
+
+    {"id":"mobilefuse","order":7,"name":"MobileFuse","category":"Demand-Side / Bidder",
+     "coreDifferentiator":"A demand-side SDK bidder that plugs into other platforms' mediation stacks rather than a standalone mediation platform; duoBid lets video demand fill static banner slots.",
+     "structuralWeakness":"Because it's a demand-side plug-in rather than a publisher-adopted mediator, independent market-share data was not found.",
+     "adFormats":"Interstitial, Banner, Medium Rectangle, Rewarded",
+     "integrationModel":"Token-based OpenRTB SDK bidding that plugs into other platforms' mediation; also a Prebid Mobile header-bidding adapter.",
+     "platforms":"iOS, Android; also via Prebid Mobile header-bidding adapter",
+     "sdkSize":"Not publicly disclosed",
+     "reporting":"Not detailed in sources reviewed — flagged unclear",
+     "privacy":"Token generation respects opt-out flags; PII (if used) end-to-end encrypted between SDK and exchange",
+     "positioning":"Advertisers/demand partners seeking premium in-app, CTV, and DOOH inventory access",
+     "pricing":"Not publicly disclosed",
+     "demandNetwork":"Functions as a demand source integrated into other platforms' mediation stacks",
+     "proprietaryTech":"duoBid: lets video ad demand fill previously static banner inventory (vendor-claimed 20%+ eCPM lift)",
+     "marketShare":"Self-describes as 'one of the largest' in-app/CTV/DOOH platforms; independent data not found",
+     "sources":"MobileFuse Docs; PR Newswire; Prebid Docs"},
+
+    {"id":"cloudx","order":8,"name":"CloudX","category":"Mediation SDK",
+     "coreDifferentiator":"Runs its auction inside a Trusted Execution Environment (AWS Nitro Enclave) and has open-sourced the core auction logic itself, so buyers can cryptographically verify the deployed code isn't self-preferencing.",
+     "structuralWeakness":"Founded 2025; framed as a 'spiritual successor to MoPub', but actual publisher-adoption scale beyond launch partners is not yet established.",
+     "adFormats":"Not explicitly enumerated in vendor materials reviewed — flagged unclear",
+     "integrationModel":"Real-time bidding inside a TEE-secured, transparent unified auction; opened to non-SDK omnichannel DSP demand (Jan 2026) without publisher SDK changes.",
+     "platforms":"Native Android (Kotlin/Java), Native iOS (Swift/Objective-C), React Native",
+     "sdkSize":"Not publicly disclosed",
+     "reporting":"Real-time analytics, log-level access, dynamic price floors, 'CloudX Agent' AI diagnostics",
+     "privacy":"Built-in support for GDPR, CCPA, IAB TCF 2.0, GPP, and US Privacy strings",
+     "positioning":"Publishers wanting AI-automated, transparent monetization infrastructure — founded by the creators of MoPub and MAX",
+     "pricing":"Unified take rate: SDK-based bidders and non-SDK omnichannel DSP buyers pay the same rate.",
+     "demandNetwork":"Launch partners: Meta, Liftoff, Magnite; later expanded to Unity, InMobi, Mintegral, Moloco",
+     "proprietaryTech":"TEE (AWS Nitro Enclave)-secured, open-sourced core auction logic (github.com/cloudx-io/openauction) with remote attestation",
+     "marketShare":"GA reached early 2026; adoption scale beyond launch partners not yet established",
+     "sources":"GitHub cloudx-io/openauction; ppc.land; AdExchanger; PR Newswire; TickerTrends"},
+
+    {"id":"inmobi","order":9,"name":"InMobi","category":"Demand-Side / Bidder",
+     "coreDifferentiator":"Geographic depth in Asia-Pacific and emerging markets, plus its own advertiser DSP — but functions mostly as a demand source plugged into AdMob, MAX, and LevelPlay.",
+     "structuralWeakness":"Mostly a demand-side role in others' mediation; independent global market-share figures were not found.",
+     "adFormats":"Banner, Interstitial, Native, Rewarded video, playables",
+     "integrationModel":"Hybrid waterfall/RTB; largely a demand source plugged into AdMob, MAX, and LevelPlay mediation, plus its own publisher SDK.",
+     "platforms":"iOS, Android (native SDK); reachable via adapters in Unity, Flutter, other mediators",
+     "sdkSize":"Not publicly disclosed",
+     "reporting":"A/B testing, price floors, yield-optimization tooling",
+     "privacy":"In-house Consent Management Platform (CMP); GDPR, CCPA, TCF, GPP support",
+     "positioning":"Publishers/advertisers with strong exposure to Asia-Pacific and emerging markets",
+     "pricing":"Not publicly disclosed",
+     "demandNetwork":"Plugs into AdMob, MAX, and LevelPlay as a bidding/waterfall demand source; also its own advertiser DSP",
+     "proprietaryTech":"In-house CMP; own DSP with multivariate creative testing and format-level bid adjustments",
+     "marketShare":"Established player (founded 2007) with recognized geographic strength",
+     "sources":"Google Developers InMobi guides; Watsspace; Applixir"},
+
+    {"id":"amazon-aps","order":10,"name":"Amazon (Publisher Services: TAM/UAM)","category":"Header Bidding",
+     "coreDifferentiator":"Exclusive access to Amazon's own advertiser demand pool via server-side header bidding.",
+     "structuralWeakness":"In-app mobile footprint is smaller and far less documented than Amazon's web/header-bidding business.",
+     "adFormats":"Banner, pre-roll/rewarded video — delivered via a lightweight APS SDK layered on partner ad-network SDKs",
+     "integrationModel":"Server-side header bidding: TAM requires publisher's own demand contracts; UAM is Amazon-managed demand with a disclosed transaction fee.",
+     "platforms":"iOS, Android via the APS SDK",
+     "sdkSize":"Not publicly disclosed",
+     "reporting":"Auction-level reporting showing each bidder's CPM and the winner",
+     "privacy":"Relies on partner-network SDKs for GDPR/CCPA consent signaling",
+     "positioning":"Larger publishers who already run header bidding and want incremental, Amazon-exclusive demand",
+     "pricing":"TAM: small per-CPM fee to bidders. UAM: ~10% transaction fee deducted from SSP bids per a single third-party source — treat as approximate.",
+     "demandNetwork":"Amazon's own materials cite '50+ buyers' in one place, 'over 20' in another",
+     "proprietaryTech":"Exclusive access to Amazon's own advertiser demand pool",
+     "marketShare":"Long-established on web/header-bidding side; in-app mobile footprint smaller/more niche",
+     "sources":"Amazon Publisher Services; Playwire; Publift"},
+
+    {"id":"loopme","order":11,"name":"LoopMe","category":"DSP",
+     "coreDifferentiator":"A 'brand performance' DSP specialist bridging web-native brand/agency budgets into mobile app inventory, operationalized through the Chartboost SDK it has owned since 2024.",
+     "structuralWeakness":"Mobile-app relevance is entirely downstream of Chartboost's technical capabilities and adoption.",
+     "adFormats":"Pre-roll, vertical video, native, 360, rich-media (DSP-side formats); reaches in-app inventory via the Chartboost SDK",
+     "integrationModel":"Primarily a DSP with proprietary 'Intelligent Marketplace' auction; mobile supply access via Chartboost SDK plus 'Chartboost Direct' deal structures.",
+     "platforms":"Reaches iOS/Android/Unity apps via the Chartboost SDK rather than its own publisher SDK",
+     "sdkSize":"N/A — supply-side footprint is Chartboost's",
+     "reporting":"'Premium Deals Library', campaign KPI reporting",
+     "privacy":"Not detailed independently; presumed to inherit Chartboost SDK consent handling — flagged unclear",
+     "positioning":"Brand agencies and DSPs seeking premium, brand-safe mobile app inventory",
+     "pricing":"Revenue via media-transaction take rates plus SaaS-style measurement/data revenue; exact rates not disclosed",
+     "demandNetwork":"Launch/marketplace partners not fully enumerated; supply access via Chartboost's mediation partner list",
+     "proprietaryTech":"Patented 'Intelligent Marketplace' (6 issued patents, 12 pending) with AI-based ad-request filtering claimed to reduce processing overhead by 98%",
+     "marketShare":"Named 'best overall media owner' in the IPA Digital Media Owner Spring 2026 Survey (industry award, not market share)",
+     "sources":"LoopMe Intelligent Marketplace page; ppc.land; Adweek; LoopMe News & Blog"},
+
+    {"id":"liftoff-dsp","order":12,"name":"Liftoff (Accelerate/Direct, DSP)","category":"DSP",
+     "coreDifferentiator":"Unified DSP+SSP architecture built around Cortex, a proprietary neural-network prediction/bidding engine with direct training signal from the Vungle SSP it also owns.",
+     "structuralWeakness":"Same structural conflict as the Vungle side: Cortex's edge comes substantially from owning the SSP it buys through.",
+     "adFormats":"Rewarded, playable, interstitial, native video (advertiser-side formats)",
+     "integrationModel":"Unified DSP+SSP; Cortex-powered DSP buys largely through the Vungle Exchange/Liftoff Monetize supply it also owns.",
+     "platforms":"Supply-side footprint = the Vungle SDK; no separate publisher SDK for advertisers",
+     "sdkSize":"Shares the Vungle SDK footprint (<1MB Android / ~5.12MB iOS)",
+     "reporting":"Cortex-powered prediction/bidding analytics for advertisers",
+     "privacy":"Inherits Vungle SDK consent handling on the supply side",
+     "positioning":"Performance-driven app marketers (gaming, fintech, entertainment, subscription apps) optimizing for ROAS/LTV",
+     "pricing":"Outcome-based advertiser pricing (CPI/CPA/ROAS); not a publisher revenue-share model",
+     "demandNetwork":"Per 2026 Nasdaq S-1 filings, shared SDK integrated in 160,000+ apps, ~1.4B DAU, 881 demand-side customers in 2025",
+     "proprietaryTech":"Cortex: proprietary neural-network prediction/bidding engine, plus vertical-specific 'Adapters'",
+     "marketShare":"Filed for Nasdaq IPO (S-1) Jan/Apr 2026; names Google, Meta, Amazon, AppLovin, Unity, and Moloco as key competitors",
+     "sources":"Liftoff Accelerate product page; TradingView S-1 coverage"}
+  ];
+
+  var NOTES = [
+    {"text":"Dashboard seeded from the full 12-SDK research pass (technical capabilities + differentiation + proprietary tech deep-dive). Two fuller written reports with numbered source citations are available from Claude if you need underlying sourcing for any claim here.","authorName":"Claude (research)"},
+    {"text":"Open thread: the defensible \"added value\" for a new SSP-built SDK looks like (1) verifiable non-conflicted auction (CloudX is the precedent) and (2) closing the brand-currency gap (native pre-bid verification + cross-app deduplicated reach/frequency + curated deal-ID tier). Neither is fully solved by any of the 12 yet.","authorName":"Claude (research)"}
+  ];
+
+  var VALUE_THEMES = [
+    {"order":1,"title":"AI yield / data-flywheel optimization","who":"AppLovin (Axon), Unity/LevelPlay (Vector), Liftoff/Vungle (Cortex + LXA)","note":"Real eCPM lift for publishers, but the model is trained on the same mediator's own DSP traffic — a genuine moat and the source of the self-preferencing critique."},
+    {"order":2,"title":"Verifiable, non-conflicted auction trust","who":"CloudX","note":"Open-sourced auction core running inside a TEE (AWS Nitro Enclave) — a cryptographic guarantee instead of a policy promise. Currently the only entrant solving this directly."},
+    {"order":3,"title":"Brand & omnichannel demand access","who":"Chartboost Direct (LoopMe), CloudX (omnichannel DSPs), Amazon TAM/UAM","note":"Three separate, very recent (2025–2026) attempts to route brand-agency and non-SDK programmatic budgets into mobile app inventory. Real, but early and unproven at scale."},
+    {"order":4,"title":"Distribution & install-friction removal","who":"Digital Turbine (SingleTap)","note":"Solves a completely different problem — one-tap installs via OEM/carrier device integration — not mediation yield. A category of one."},
+    {"order":5,"title":"Exclusive or differentiated demand pools","who":"Amazon (own advertiser demand), InMobi (APAC/emerging-market depth), LoopMe (brand-agency marketplace)","note":"Value comes from WHO they can reach, not how the auction works."},
+    {"order":6,"title":"Lightweight footprint / low integration cost","who":"Chartboost (<340KB), Vungle/Liftoff Monetize (<1MB Android), CloudX (AI-agent automated integration)","note":"Only 3 of 12 vendors publish real footprint numbers or make integration speed a differentiator — most don't disclose this at all."}
+  ];
+
+  var PROBLEMS = [
+    {"order":1,"status":"open","title":"Self-preferencing / conflict of interest in the auction","solvedBy":"CloudX (structurally, by design)","note":"AppLovin, Unity, Google, and Liftoff/Vungle all run their own demand inside the same auction they operate as mediator — a structural issue, not a technical one. Only a non-competing operator can credibly avoid it."},
+    {"order":2,"status":"partial","title":"Opaque auction mechanics & fee disclosure","solvedBy":"Chartboost (no demand fee to bidders), CloudX (unified take rate + public auction code)","note":"Publisher take rates are undisclosed by the vendor itself for 10 of the 12 SDKs tracked here."},
+    {"order":3,"status":"partial","title":"Brand & omnichannel demand locked out of in-app inventory","solvedBy":"Chartboost Direct (LoopMe), CloudX (omnichannel DSP access), Amazon TAM/UAM","note":"The single biggest live opportunity in this market. Three independent 2025–2026 attempts at the same fix — none yet at meaningful scale."},
+    {"order":4,"status":"open","title":"No cross-app deduplicated reach/frequency currency for brand planning","solvedBy":"None of the 12","note":"No mediation SDK here does cross-publisher identity resolution for advertiser planning purposes. This is the clearest whitespace in the whole category."},
+    {"order":5,"status":"solved","title":"SDK footprint & integration overhead","solvedBy":"Chartboost (<340KB), Vungle/Liftoff Monetize (<1MB Android), CloudX (AI-agent automated setup, ~90% faster claimed)","note":"Genuinely solved by a minority of vendors who chose to make it a differentiator."},
+    {"order":6,"status":"solved","title":"Privacy / consent handling (GDPR, CCPA, ATT, COPPA)","solvedBy":"Nearly all 12, to varying depth","note":"Baseline table stakes across the industry now. The remaining differentiation is depth, not existence."},
+    {"order":7,"status":"partial","title":"Signal loss after ATT / IDFA opt-out","solvedBy":"AppLovin (Axon contextual/behavioral fallback), Unity (Vector runtime gameplay data), InMobi (own DSP signal)","note":"AI platforms with their own first-party demand can partially compensate; smaller demand-side-only players remain more exposed."},
+    {"order":8,"status":"open","title":"Ad fraud / IVT verification built into the SDK itself","solvedBy":"Not directly addressed by any of the 12 in sources reviewed","note":"Fraud/IVT verification is still treated as an external, bolted-on layer rather than a native part of any mediation SDK examined here."},
+    {"order":9,"status":"solved","title":"App-store install friction / drop-off","solvedBy":"Digital Turbine (SingleTap)","note":"Solved well, but by exactly one vendor, via a fundamentally different device/OEM-level approach."}
+  ];
+
+  var CATEGORIES = ["Mediation SDK", "Demand-Side / Bidder", "DSP", "On-Device Distribution", "Header Bidding"];
+  var FIELDS = [
+    ["adFormats", "Ad formats"], ["integrationModel", "Integration model"], ["platforms", "Platform / framework support"],
+    ["sdkSize", "SDK size / footprint"], ["reporting", "Reporting & analytics"], ["privacy", "Privacy / consent handling"],
+    ["positioning", "Positioning / target customer"], ["pricing", "Pricing / revenue-share model"],
+    ["demandNetwork", "Demand partner network"], ["proprietaryTech", "Notable proprietary tech"],
+    ["marketShare", "Market share / adoption signals"], ["sources", "Sources / notes"]
+  ];
+
+  var state = { activeCats: new Set(), query: "" };
+  var els = {
+    grid: document.getElementById("sdk-grid"),
+    chips: document.getElementById("category-chips"),
+    search: document.getElementById("search-input"),
+    statsBody: document.getElementById("stats-body"),
+    noteList: document.getElementById("note-list"),
+    valueThemesBody: document.getElementById("value-themes-body"),
+    problemsBody: document.getElementById("problems-body")
+  };
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c];
+    });
+  }
+
+  function renderChips() {
+    els.chips.innerHTML = CATEGORIES.map(function (c) {
+      return '<button class="chip" aria-pressed="' + state.activeCats.has(c) + '" data-cat="' + escapeHtml(c) + '">' + escapeHtml(c) + "</button>";
+    }).join("");
+    Array.prototype.forEach.call(els.chips.querySelectorAll(".chip"), function (btn) {
+      btn.addEventListener("click", function () {
+        var c = btn.getAttribute("data-cat");
+        if (state.activeCats.has(c)) state.activeCats.delete(c); else state.activeCats.add(c);
+        renderChips();
+        renderGrid();
+      });
+    });
+  }
+
+  function filtered() {
+    var q = state.query.trim().toLowerCase();
+    return SDKS.filter(function (s) {
+      if (state.activeCats.size && !state.activeCats.has(s.category)) return false;
+      if (!q) return true;
+      var hay = [s.name, s.category, s.coreDifferentiator, s.proprietaryTech, s.positioning].join(" ").toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+  }
+
+  function renderGrid() {
+    var list = filtered();
+    if (!list.length) { els.grid.innerHTML = '<div class="empty">No SDKs match your filters.</div>'; return; }
+    els.grid.innerHTML = list.map(function (s) {
+      return (
+        '<article class="card" data-cat="' + escapeHtml(s.category) + '">' +
+          '<div class="card-top"><h3>' + escapeHtml(s.name) + '</h3><span class="cat-badge">' + escapeHtml(s.category) + "</span></div>" +
+          '<p class="diff-line">' + escapeHtml(s.coreDifferentiator) + "</p>" +
+          (s.structuralWeakness ? '<p class="weak-line"><span class="wdot"></span>' + escapeHtml(s.structuralWeakness) + "</p>" : "") +
+          '<div class="card-foot"><span class="meta">Snapshot data</span><button class="link-btn" data-id="' + escapeHtml(s.id) + '">Details</button></div>' +
+        "</article>"
+      );
+    }).join("");
+  }
+
+  function renderStats() {
+    var byCat = {};
+    SDKS.forEach(function (s) { byCat[s.category] = (byCat[s.category] || 0) + 1; });
+    var rows = '<div class="stat-row"><span>Total SDKs tracked</span><span>' + SDKS.length + "</span></div>";
+    CATEGORIES.forEach(function (c) { if (byCat[c]) rows += '<div class="stat-row"><span>' + escapeHtml(c) + "</span><span>" + byCat[c] + "</span></div>"; });
+    els.statsBody.innerHTML = rows;
+  }
+
+  function renderNotes() {
+    els.noteList.innerHTML = NOTES.map(function (n) {
+      return '<div class="note-item"><p class="note-text">' + escapeHtml(n.text) + '</p><p class="note-meta">' + escapeHtml(n.authorName) + "</p></div>";
+    }).join("");
+  }
+
+  function renderValueThemes() {
+    var items = VALUE_THEMES.slice().sort(function (a, b) { return (a.order || 99) - (b.order || 99); });
+    els.valueThemesBody.innerHTML = items.map(function (t) {
+      return '<div class="theme-item"><h4>' + escapeHtml(t.title) + '</h4><p><span class="who">' + escapeHtml(t.who) + "</span> — " + escapeHtml(t.note) + "</p></div>";
+    }).join("");
+  }
+
+  function renderProblems() {
+    var labels = { solved: "Solved", partial: "Partially solved", open: "Open gap" };
+    var items = PROBLEMS.slice().sort(function (a, b) { return (a.order || 99) - (b.order || 99); });
+    els.problemsBody.innerHTML = items.map(function (p) {
+      var status = labels[p.status] ? p.status : "open";
+      return (
+        '<div class="problem-item">' +
+          '<div class="prow"><h4>' + escapeHtml(p.title) + '</h4><span class="status-badge ' + status + '">' + labels[status] + "</span></div>" +
+          "<p>" + escapeHtml(p.note) + "</p>" +
+          '<p class="who">Addressed by: ' + escapeHtml(p.solvedBy) + "</p>" +
+        "</div>"
+      );
+    }).join("");
+  }
+
+  function openDetail(id) {
+    var s = SDKS.find(function (x) { return x.id === id; });
+    if (!s) return;
+    var body = '<div class="card-top"><h3>' + escapeHtml(s.name) + '</h3><button class="close-x" id="modal-close" aria-label="Close">&times;</button></div>' +
+      '<span class="cat-badge">' + escapeHtml(s.category) + "</span>" +
+      (s.structuralWeakness ? '<p class="weak-line" style="margin-top:12px;"><span class="wdot"></span>' + escapeHtml(s.structuralWeakness) + "</p>" : "") +
+      "<dl>" + FIELDS.map(function (f) {
+        var val = s[f[0]];
+        return val ? "<dt>" + f[1] + "</dt><dd>" + escapeHtml(val) + "</dd>" : "";
+      }).join("") + "</dl>";
+    var backdrop = document.createElement("div");
+    backdrop.className = "modal-backdrop";
+    backdrop.innerHTML = '<div class="modal" role="dialog" aria-modal="true">' + body + "</div>";
+    document.body.appendChild(backdrop);
+    backdrop.addEventListener("click", function (e) { if (e.target === backdrop) backdrop.remove(); });
+    document.getElementById("modal-close").addEventListener("click", function () { backdrop.remove(); });
+  }
+
+  document.getElementById("snapshot-date").textContent = "Snapshot \u00b7 " + SNAPSHOT_DATE;
+  renderChips(); renderGrid(); renderStats(); renderNotes(); renderValueThemes(); renderProblems();
+  els.search.addEventListener("input", function () { state.query = els.search.value; renderGrid(); });
+  els.grid.addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-id]");
+    if (btn) openDetail(btn.getAttribute("data-id"));
+  });
+})();
+</script>
+</body>
+</html>
