@@ -210,6 +210,46 @@ h1, h2, h3, h4, .num { font-family: '${T.HFONT}', sans-serif; letter-spacing: -0
 
 .foot { margin-top: 20px; font-size: 11px; color: var(--ghost); text-align: center; }
 
+/* primers */
+.sub-h { font-size: 12.5px; font-weight: 600; margin: 14px 0 8px; }
+.fine { font-size: 10.5px; color: var(--ghost); font-style: italic; margin: 10px 0 0; line-height: 1.45; }
+.lanes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.lane { background: var(--fill2); border-radius: 10px; padding: 12px; }
+.lane p { margin: 8px 0 0; font-size: 12px; color: var(--muted); line-height: 1.45; }
+.lane .cost { margin-top: 7px; font-size: 11.5px; font-weight: 500; }
+.rule {
+  background: var(--rise); color: #fff; border-radius: 10px; padding: 12px 14px;
+  font-size: 12.5px; line-height: 1.5; margin: 12px 0;
+}
+.who-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.who-item { background: var(--fill2); border-radius: 10px; padding: 10px 12px; }
+.who-item h4 { font-size: 12px; font-weight: 600; }
+.who-item p { margin: 3px 0 0; font-size: 11.5px; color: var(--muted); line-height: 1.45; }
+.open-row { border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+.open-row .lbl { font-size: 10.5px; font-weight: 500; display: flex; justify-content: space-between; }
+.open-row .names { font-family: '${T.HFONT}'; font-weight: 600; font-size: 13.5px; margin-top: 3px; color: var(--ink); }
+.scale { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+.scale .n { font-family: '${T.HFONT}'; font-weight: 600; font-size: 17px; color: var(--rise); }
+.scale .l { font-size: 10.5px; color: var(--faint); }
+.proscons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pc-col h4 { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 7px; }
+.pc-item { border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; }
+.pc-item b { display: block; font-family: '${T.HFONT}'; font-size: 11px; color: var(--ink); }
+.pc-item span { font-size: 10.5px; line-height: 1.4; display: block; margin-top: 2px; }
+.money { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.money .tile2 { background: var(--fill2); border-radius: 10px; padding: 10px; }
+.money .v { font-family: '${T.HFONT}'; font-weight: 600; font-size: 18px; color: var(--rise); }
+.money .l { font-size: 10.5px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
+.money .src { font-size: 9px; color: var(--ghost); font-style: italic; margin-top: 3px; }
+.ev { border-bottom: 1px solid var(--border); padding: 8px 0; }
+.ev:last-child { border-bottom: none; }
+.ev b { font-size: 11.5px; color: var(--rise); }
+.ev p { margin: 2px 0 0; font-size: 11.5px; color: var(--muted); line-height: 1.45; }
+@media (max-width: 980px) {
+  .lanes, .scale, .money { grid-template-columns: 1fr; }
+  .who-grid, .proscons { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 980px) {
   .layout, .synthesis { grid-template-columns: 1fr; }
 }
@@ -226,6 +266,11 @@ const payload = {
   statusLabel: T.STATUS_LABEL,
   statusPair: T.STATUS,
   disclosure: disclosureCounts,
+  narrative: data.narrative,
+  openStack: {
+    prebid: data.sdks.filter((x) => x.openStack && x.openStack.prebid).map((x) => x.deck.name),
+    openSource: data.sdks.filter((x) => x.openStack && x.openStack.openSource).map((x) => x.deck.name),
+  },
   total: n,
   statusCounts: { solved: byStatus("solved").length, partial: byStatus("partial").length, open: byStatus("open").length },
   generatedAt: new Date().toISOString().slice(0, 10),
@@ -360,7 +405,49 @@ const JS = `
     b.querySelector(".close-x").focus();
   }
 
-  renderChips(); renderGrid(); renderThemes(); renderProblems(); renderSide();
+  function renderPrimers() {
+    var im = D.narrative.implementation;
+    $("lanes").innerHTML = im.lanes.map(function (l) {
+      return '<div class="lane">' + badge(l[1], l[0]) +
+        '<p>' + esc(l[2]) + '</p>' +
+        '<div class="cost" style="color:var(--pair-' + l[1] + '-fg)">' + esc(l[3]) + '</div></div>';
+    }).join("");
+    $("who-impl").innerHTML = im.who.map(function (w) {
+      return '<div class="who-item"><h4>' + esc(w[0]) + '</h4><p>' + esc(w[1]) + '</p></div>';
+    }).join("");
+
+    var pb = D.narrative.prebid;
+    var rows = [["Ships a Prebid Mobile path", D.openStack.prebid, "blue"],
+                ["Publishes source for part of the stack", D.openStack.openSource, "green"]];
+    $("prebid-who").innerHTML = rows.map(function (r) {
+      return '<div class="open-row" style="background:var(--pair-' + r[2] + '-bg)">' +
+        '<div class="lbl" style="color:var(--pair-' + r[2] + '-fg)"><span>' + esc(r[0]) + '</span>' +
+        '<span>' + r[1].length + ' of ' + D.total + '</span></div>' +
+        '<div class="names">' + (r[1].length ? esc(r[1].join("  \u00b7  ")) : "None") + '</div></div>';
+    }).join("");
+    $("prebid-scale").innerHTML = pb.scale.map(function (t) {
+      return '<div><div class="n">' + esc(t[0]) + '</div><div class="l">' + esc(t[1]) + '</div></div>';
+    }).join("");
+    $("prebid-pc").innerHTML = [["What it buys you", pb.pros, "green"], ["What it costs you", pb.cons, "red"]]
+      .map(function (col) {
+        return '<div class="pc-col"><h4 style="color:var(--pair-' + col[2] + '-fg)">' + esc(col[0]) + '</h4>' +
+          col[1].map(function (it) {
+            return '<div class="pc-item" style="background:var(--pair-' + col[2] + '-bg)">' +
+              '<b>' + esc(it[0]) + '</b><span style="color:var(--pair-' + col[2] + '-fg)">' + esc(it[1]) + '</span></div>';
+          }).join("") + '</div>';
+      }).join("");
+
+    var bo = D.narrative.brandOpportunity;
+    $("money").innerHTML = bo.stats.map(function (t) {
+      return '<div class="tile2"><div class="v">' + esc(t[0]) + '</div><div class="l">' + esc(t[1]) +
+        '</div><div class="src">' + esc(t[2]) + '</div></div>';
+    }).join("");
+    $("evidence").innerHTML = bo.evidence.items.map(function (it) {
+      return '<div class="ev"><b>' + esc(it[0]) + '</b><p>' + esc(it[1]) + '</p></div>';
+    }).join("");
+  }
+
+  renderChips(); renderGrid(); renderThemes(); renderProblems(); renderSide(); renderPrimers();
   $("search").addEventListener("input", function () { state.q = this.value; renderGrid(); });
   $("grid").addEventListener("click", function (e) {
     var t = e.target.closest("[data-id]");
@@ -410,6 +497,35 @@ const html = `<!DOCTYPE html>
         <h2 class="panel-title">Industry problems: what's already solved</h2>
         <p class="panel-sub">Known pain points in in-app mediation, and whether any tracked SDK actually solves them.</p>
         <div id="problems"></div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-bottom:22px">
+      <h2 class="panel-title">${esc(data.narrative.implementation.title)}</h2>
+      <p class="panel-sub">${esc(data.narrative.implementation.sub)}</p>
+      <div class="lanes" id="lanes"></div>
+      <div class="rule">${esc(data.narrative.implementation.rule)}</div>
+      <div class="who-grid" id="who-impl"></div>
+      <p class="fine">${esc(data.narrative.implementation.footnote)}</p>
+    </section>
+
+    <div class="synthesis" style="margin-bottom:22px">
+      <section class="card">
+        <h2 class="panel-title">${esc(data.narrative.prebid.title)}</h2>
+        <p class="panel-sub">${esc(data.narrative.prebid.sub)}</p>
+        <div id="prebid-who"></div>
+        <div class="scale" id="prebid-scale"></div>
+        <div class="proscons" id="prebid-pc"></div>
+        <p class="fine">${esc(data.narrative.prebid.footnote)}</p>
+      </section>
+      <section class="card">
+        <h2 class="panel-title">${esc(data.narrative.brandOpportunity.title)}</h2>
+        <p class="panel-sub">${esc(data.narrative.brandOpportunity.sub)}</p>
+        <div class="money" id="money"></div>
+        <h3 class="sub-h">${esc(data.narrative.brandOpportunity.evidence.title)}</h3>
+        <div id="evidence"></div>
+        <div class="rule">${esc(data.narrative.brandOpportunity.readThrough)}</div>
+        <p class="fine">${esc(data.narrative.brandOpportunity.footnote)}</p>
       </section>
     </div>
 

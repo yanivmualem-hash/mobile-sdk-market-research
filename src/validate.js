@@ -72,6 +72,14 @@ D.sdks.forEach((s, i) => {
     if (!s.deck[f] || !String(s.deck[f]).trim()) err(where, "deck.\"" + f + "\" is missing or empty");
   });
 
+  if (!s.openStack) err(where, "missing \"openStack\" block ({prebid, openSource, note})");
+  else ["prebid", "openSource"].forEach((f) => {
+    if (typeof s.openStack[f] !== "boolean")
+      err(where, "openStack.\"" + f + "\" must be true or false, got " + JSON.stringify(s.openStack[f]));
+  });
+  if (s.openStack && (s.openStack.prebid || s.openStack.openSource) && !String(s.openStack.note || "").trim())
+    warn(where, "openStack is flagged true but has no note saying what is open — say what, and where");
+
   if (!s.disclosure) err(where, "missing \"disclosure\" block — it drives the disclosure chart");
   else DISCLOSURE_FIELDS.forEach((f) => {
     if (typeof s.disclosure[f] !== "boolean")

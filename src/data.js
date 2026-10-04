@@ -10,6 +10,8 @@
 //   {{disclosed.KEY}}        SDKs whose vendor publishes KEY
 //   {{undisclosed.KEY}}      SDKs whose vendor does not
 //   {{status.KEY}}           problems with status solved | partial | open
+//   {{openStack.prebid}}     SDKs offering a Prebid Mobile path
+//   {{openStack.openSource}} SDKs publishing source for part of their stack
 //     KEY for disclosed/undisclosed: adFormats, reporting, sdkSize, takeRate
 
 const fs = require("fs");
@@ -29,6 +31,9 @@ function figures(d) {
   });
   ["solved", "partial", "open"].forEach((st) => {
     f["status." + st] = d.problems.filter((p) => p.status === st).length;
+  });
+  ["prebid", "openSource"].forEach((k) => {
+    f["openStack." + k] = d.sdks.filter((s) => s.openStack && s.openStack[k]).length;
   });
   return f;
 }

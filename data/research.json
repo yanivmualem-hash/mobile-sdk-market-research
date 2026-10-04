@@ -111,6 +111,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -145,6 +150,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -179,6 +189,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -213,6 +228,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -247,6 +267,11 @@
         "reporting": true,
         "sdkSize": true,
         "takeRate": true
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -281,6 +306,11 @@
         "reporting": true,
         "sdkSize": true,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -315,6 +345,11 @@
         "reporting": false,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": true,
+        "openSource": false,
+        "note": "Ships a Prebid Mobile header-bidding adapter alongside its own token-based SDK bidding."
       }
     },
     {
@@ -349,6 +384,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": true
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": true,
+        "note": "Open-sourced the auction core itself (github.com/cloudx-io/openauction) rather than the SDK wrapper — a different and stronger claim."
       }
     },
     {
@@ -383,6 +423,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -417,6 +462,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -451,6 +501,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -485,6 +540,11 @@
         "reporting": true,
         "sdkSize": true,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -519,6 +579,11 @@
         "reporting": true,
         "sdkSize": true,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": true,
+        "openSource": true,
+        "note": "OpenWrap SDK is built on Prebid; PubMatic's Demand Manager Mobile is a Prebid-SDK product. Prebid Mobile itself is open source under Prebid.org."
       }
     },
     {
@@ -553,6 +618,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -587,6 +657,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -621,6 +696,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": true,
+        "openSource": true,
+        "note": "HyBid 3.0 is open-sourced on GitHub, and PubNative is documented as a Prebid Mobile bidder."
       }
     },
     {
@@ -655,6 +735,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": true
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -689,6 +774,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     },
     {
@@ -723,6 +813,11 @@
         "reporting": true,
         "sdkSize": false,
         "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": false,
+        "note": ""
       }
     }
   ],
@@ -1000,6 +1095,170 @@
       "solved": "Note how narrow “solved” is: footprint by three vendors, install friction by exactly one, and via a completely different mechanism.",
       "partial": "Brand and omnichannel demand access is the one to watch — three unrelated vendors attacked the same gap within eighteen months, which usually signals the gap is real.",
       "open": "These are the strategic content of the deck. The cross-app reach currency in particular is unclaimed by anyone."
+    },
+    "implementation": {
+      "eyebrow": "Primer",
+      "title": "Who implements what",
+      "sub": "The plumbing in one slide: an app carries one mediation SDK, and everything else is either an adapter compiled into that app or a server-side bid.",
+      "lanes": [
+        [
+          "The publisher (the app)",
+          "blue",
+          "Drops in ONE mediation SDK, then an adapter for each demand partner that needs app-side code. Maps ad units to placements and ships it.",
+          "Cost: every adapter added or upgraded means an app-store release."
+        ],
+        [
+          "The mediation platform",
+          "purple",
+          "Owns the SDK, runs the auction, maintains every adapter and reports the results. AppLovin MAX, AdMob and Unity LevelPlay are this layer.",
+          "Leverage: it sets the rules of the auction it also sells into."
+        ],
+        [
+          "The demand partners",
+          "teal",
+          "Networks, DSPs and SSPs supply either an adapter (code inside the app) or a bid endpoint reached server-side (no app code at all).",
+          "Server-side demand costs the publisher nothing to add."
+        ]
+      ],
+      "rule": "The whole economics of this market sit in one line: demand that needs an adapter costs the publisher an app release, demand that bids server-side costs them nothing. That is why bidding beat the waterfall, and why wrappers exist.",
+      "who": [
+        [
+          "Indie / small publisher",
+          "One mediation SDK, nothing else. AdMob or MAX. Added adapters cost more in release overhead than they return."
+        ],
+        [
+          "Mid-size gaming publisher",
+          "Mediation SDK plus three to six bidding adapters — enough competition to lift eCPM without an unmanageable release burden."
+        ],
+        [
+          "Premium / brand publisher",
+          "Mediation SDK plus an SSP wrapper (Prebid or OpenWrap) to reach brand budgets the gaming networks do not carry."
+        ],
+        [
+          "An SSP entering this market",
+          "Be an adapter inside others' mediation first. A publisher SDK is a years-long distribution problem; prove the demand is worth carrying before asking anyone to ship a release for you."
+        ]
+      ],
+      "footnote": "Simplified: it leaves out server-to-server wrappers, SKAdNetwork postbacks and the ad-serving step after the auction resolves.",
+      "notes": "If someone takes one thing from this deck, make it the line in the middle. Adapter demand costs an app release; server-side demand is free to add. Every structural fight in this market follows from that asymmetry."
+    },
+    "prebid": {
+      "eyebrow": "Open source",
+      "title": "Prebid and the open-source option",
+      "sub": "Prebid Mobile is the IAB-adjacent open-source alternative to a proprietary mediation SDK: {{openStack.prebid}} of the {{total}} vendors tracked here offer a Prebid path, and {{openStack.openSource}} publish source for some part of their stack.",
+      "scale": [
+        [
+          "2,000+",
+          "apps running Prebid Mobile"
+        ],
+        [
+          "300+",
+          "demand partners in the ecosystem"
+        ],
+        [
+          "90%+",
+          "of server-side installs managed by SSPs"
+        ]
+      ],
+      "pros": [
+        [
+          "No single owner of the auction",
+          "Public code governed by Prebid.org, so no participant can quietly prefer its own demand."
+        ],
+        [
+          "One integration, many bidders",
+          "Demand partners write to a shared interface instead of each being integrated separately."
+        ],
+        [
+          "Inspectable and forkable",
+          "Anyone can read what the auction does, and ship their own build rather than wait on a roadmap."
+        ],
+        [
+          "Lower switching cost",
+          "Changing SSP is a config change, not an SDK rip-and-replace, which weakens incumbent lock-in."
+        ]
+      ],
+      "cons": [
+        [
+          "Someone still has to run it",
+          "It removes the owner, not the work — setup, adapter upkeep and yield tuning fall on the publisher."
+        ],
+        [
+          "Weaker in gaming demand",
+          "The big performance networks reach apps via their own SDKs, so pure Prebid leaves gaming eCPM behind."
+        ],
+        [
+          "Open code is not a verified auction",
+          "Source proves what the code says, not what the server ran. Only CloudX closes that, with a TEE."
+        ],
+        [
+          "Fragmented accountability",
+          "When fill or latency degrades no single vendor is on the hook — which is what a mediation contract buys."
+        ]
+      ],
+      "footnote": "\"Prebid path\" means the vendor ships or documents a Prebid Mobile integration — not merely that it bids into someone else's Prebid auction.",
+      "notes": "The honest read: Prebid solves governance, not operations. It answers who controls the auction, and says nothing about who does the work. That distinction is what a commercial wrapper actually sells."
+    },
+    "brandOpportunity": {
+      "eyebrow": "The money",
+      "title": "Where brand and commerce budgets sit",
+      "sub": "In-app is where the audience is and where performance money already lives. Brand and commerce budgets are larger still, and mostly land somewhere else.",
+      "stats": [
+        [
+          "$425B",
+          "in-app ad spend forecast for 2026",
+          "Juniper Research"
+        ],
+        [
+          "~56%",
+          "of all global digital ad spend is in-app",
+          "Juniper Research"
+        ],
+        [
+          "$200B+",
+          "global retail and commerce media in 2026",
+          "WARC"
+        ],
+        [
+          "$69.3B",
+          "US retail media alone in 2026",
+          "eMarketer"
+        ],
+        [
+          "84%",
+          "of US retail media goes to Amazon and Walmart",
+          "eMarketer"
+        ],
+        [
+          "75%",
+          "of e-commerce traffic originates on mobile",
+          "industry estimate"
+        ]
+      ],
+      "evidence": {
+        "title": "In-app brand advertising does work — the measurement exists",
+        "items": [
+          [
+            "Ipsos GameTrack, Q1 2026",
+            "37,000 players across 16 European countries, nine campaigns: average +31% uplift on \"a brand for people like me.\" Pepsi +26%, Visa +18%."
+          ],
+          [
+            "inStreamly, 33 brand-lift studies",
+            "+19pts ad recall, +16pts brand affinity, +15pts brand recall from native in-game placement."
+          ],
+          [
+            "CPG benchmarks",
+            "Mobile norms sit at +7.5pts ad recall and +4.4pts purchase intent; in-game campaigns have been measured above those norms on consideration."
+          ],
+          [
+            "Ogury (prior Rise research)",
+            "CPM premiums of 25–45% over open exchange at 98% viewability — brand money pays more when the environment is guaranteed."
+          ]
+        ]
+      },
+      "readThrough": "The budgets are enormous and the effectiveness evidence is now solid. What is missing is the plumbing brand planners need — cross-app reach and frequency, pre-bid verification, a deal-ID tier. That is open gap #4, and it is the reason this money still flows to walled gardens and retail media rather than the open in-app market.",
+      "footnote": "Figures are from different houses on different definitions and do not reconcile: 2026 in-app estimates range from roughly $230B to $425B depending on whether walled-garden social is counted. Treat the direction as reliable and the absolute as approximate.",
+      "notes": "The point of this slide is the read-through, not the numbers. Brand and commerce money is the largest adjacent pool, the effectiveness case is already made, and the blocker is measurement plumbing rather than persuasion."
     }
   }
 }

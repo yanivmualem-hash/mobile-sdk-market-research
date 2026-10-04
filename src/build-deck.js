@@ -11,7 +11,7 @@ const ROOT = path.resolve(__dirname, "..");
 const D = require("./data").load();
 const N = D.narrative;
 
-const { RISE, INK, MUTED, FAINT, BORDER, FILL, FILL2, CALM, WHITE, PAIRS, HFONT, BFONT } = T;
+const { RISE, INK, MUTED, FAINT, GHOST, BORDER, FILL, FILL2, CALM, WHITE, PAIRS, HFONT, BFONT } = T;
 const pal = (k) => PAIRS[k] || PAIRS.gray;
 const catPair = (name) => pal((D.categories.find((c) => c.name === name) || {}).palette);
 const statusPair = (st) => pal(T.STATUS[st]);
@@ -212,6 +212,62 @@ const catCount = (name) => D.sdks.filter((s) => s.category === name).length;
     });
   });
   s.addNotes("Only two of these — verifiable auction trust and brand demand access — are genuinely contested whitespace.");
+}
+
+// =====================================================================
+// PRIMER — who implements what
+// =====================================================================
+if (N.implementation) {
+  const c = N.implementation;
+  const s = lightSlide();
+  heading(s, c.eyebrow, c.title, c.sub);
+
+  const lw = (CW - 0.6) / c.lanes.length;
+  c.lanes.forEach((l, i) => {
+    const x = M + i * (lw + 0.3);
+    const pair = pal(l[1]);
+    card(s, x, 2.0, lw, 1.98);
+    pill(s, x + 0.24, 2.2, Math.min(lw - 0.48, pillW(l[0], 9)), 0.3, pair, l[0].toUpperCase(), 9);
+    s.addText(l[2], {
+      x: x + 0.24, y: 2.62, w: lw - 0.48, h: 0.86, isTextBox: true, margin: 0,
+      fontFace: BFONT, fontSize: 11, color: MUTED, lineSpacing: 14.5, valign: "top",
+    });
+    s.addText(l[3], {
+      x: x + 0.24, y: 3.5, w: lw - 0.48, h: 0.4, isTextBox: true, margin: 0,
+      fontFace: BFONT, fontSize: 10, bold: true, color: pair.fg, lineSpacing: 13, valign: "top",
+    });
+    if (i < c.lanes.length - 1) s.addShape(pres.ShapeType.rightArrow, {
+      x: x + lw + 0.06, y: 2.9, w: 0.18, h: 0.16, fill: { color: CALM },
+    });
+  });
+
+  // the one line that explains the market
+  s.addShape(pres.ShapeType.roundRect, {
+    x: M, y: 4.16, w: CW, h: 0.86, rectRadius: R_CARD,
+    fill: { color: RISE }, line: { color: RISE, width: 1 },
+  });
+  s.addText(c.rule, {
+    x: M + 0.3, y: 4.26, w: CW - 0.6, h: 0.66, isTextBox: true, margin: 0,
+    fontFace: BFONT, fontSize: 12, color: WHITE, lineSpacing: 16, valign: "middle",
+  });
+
+  const ww = (CW - 0.3) / 2;
+  c.who.forEach((r, i) => {
+    const x = M + (i % 2) * (ww + 0.3);
+    const y = 5.2 + Math.floor(i / 2) * 0.78;
+    card(s, x, y, ww, 0.68, { fill: FILL2, radius: R_ROW });
+    s.addText(r[0], {
+      x: x + 0.22, y: y + 0.07, w: ww - 0.44, h: 0.24, isTextBox: true, margin: 0,
+      fontFace: HFONT, fontSize: 11, bold: true, color: INK,
+    });
+    s.addText(r[1], {
+      x: x + 0.22, y: y + 0.31, w: ww - 0.44, h: 0.32, isTextBox: true, margin: 0,
+      fontFace: BFONT, fontSize: fitSize(r[1], ww - 0.44, 0.32, 9.5, 7.5), color: MUTED,
+      lineSpacing: 11.5, valign: "top",
+    });
+  });
+  footnote(s, c.footnote);
+  if (c.notes) s.addNotes(c.notes);
 }
 
 // =====================================================================
@@ -459,6 +515,80 @@ N.tiers.forEach((tier) => {
 }
 
 // =====================================================================
+// PREBID / OPEN SOURCE
+// =====================================================================
+if (N.prebid) {
+  const c = N.prebid;
+  const s = lightSlide();
+  heading(s, c.eyebrow, c.title, c.sub);
+
+  // who actually has it — derived, never typed
+  const pb = D.sdks.filter((x) => x.openStack && x.openStack.prebid);
+  const os = D.sdks.filter((x) => x.openStack && x.openStack.openSource);
+  const lists = [
+    ["Ships a Prebid Mobile path", pb, PAIRS.blue],
+    ["Publishes source for part of the stack", os, PAIRS.green],
+  ];
+  lists.forEach((l, i) => {
+    const x = M + i * (CW / 2 + 0.15);
+    const w = CW / 2 - 0.15;
+    card(s, x, 2.0, w, 0.92, { fill: l[2].bg, line: l[2].bg });
+    s.addText(l[0], {
+      x: x + 0.24, y: 2.12, w: w - 0.48, h: 0.26, isTextBox: true, margin: 0,
+      fontFace: BFONT, fontSize: 10, bold: true, charSpacing: 0.8, color: l[2].fg,
+    });
+    s.addText(l[1].length ? l[1].map((v) => v.deck.name).join("  ·  ") : "None",
+      { x: x + 0.24, y: 2.4, w: w - 0.48, h: 0.4, isTextBox: true, margin: 0,
+        fontFace: HFONT, fontSize: 15, bold: true, color: INK, valign: "top" });
+    s.addText(l[1].length + " of " + n, {
+      x: x + w - 1.1, y: 2.12, w: 0.86, h: 0.26, isTextBox: true, margin: 0,
+      fontFace: HFONT, fontSize: 11, bold: true, color: l[2].fg, align: "right",
+    });
+  });
+
+  // scale strip
+  c.scale.forEach((t, i) => {
+    const w = (CW - 0.4) / c.scale.length;
+    const x = M + i * (w + 0.2);
+    s.addText(t[0], {
+      x, y: 3.06, w, h: 0.4, isTextBox: true, margin: 0,
+      fontFace: HFONT, fontSize: 20, bold: true, color: RISE, charSpacing: -0.4,
+    });
+    s.addText(t[1], {
+      x, y: 3.46, w, h: 0.24, isTextBox: true, margin: 0,
+      fontFace: BFONT, fontSize: 10.5, color: FAINT,
+    });
+  });
+
+  // pros / cons
+  const cw2 = (CW - 0.3) / 2;
+  [["What it buys you", c.pros, PAIRS.green], ["What it costs you", c.cons, PAIRS.red]].forEach((col, ci) => {
+    const x = M + ci * (cw2 + 0.3);
+    s.addText(col[0].toUpperCase(), {
+      x, y: 3.86, w: cw2, h: 0.24, isTextBox: true, margin: 0,
+      fontFace: BFONT, fontSize: 10, bold: true, charSpacing: 1.2, color: col[2].fg,
+    });
+    const stepY = 0.64, cardH = 0.58;
+    col[1].forEach((it, i) => {
+      const y = 4.16 + i * stepY;
+      card(s, x, y, cw2, cardH, { fill: col[2].bg, line: col[2].bg, radius: R_IN });
+      s.addText(it[0], {
+        x: x + 0.2, y: y + 0.05, w: cw2 - 0.4, h: 0.22, isTextBox: true, margin: 0,
+        fontFace: HFONT, fontSize: 10.5, bold: true, color: INK,
+      });
+      const ds = fitSize(it[1], cw2 - 0.4, 0.3, 9, 6.5);
+      s.addText(it[1], {
+        x: x + 0.2, y: y + 0.26, w: cw2 - 0.4, h: 0.3, isTextBox: true, margin: 0,
+        fontFace: BFONT, fontSize: ds, color: col[2].fg,
+        lineSpacing: ds * 1.25, valign: "top",
+      });
+    });
+  });
+  footnote(s, c.footnote);
+  if (c.notes) s.addNotes(c.notes);
+}
+
+// =====================================================================
 // DISCLOSURE
 // =====================================================================
 {
@@ -514,6 +644,69 @@ N.tiers.forEach((tier) => {
   });
   footnote(s, c.footnote);
   s.addNotes("Formats and reporting are well documented because they're sales material. Price and footprint are not, because they invite comparison.");
+}
+
+// =====================================================================
+// BRAND & COMMERCE OPPORTUNITY
+// =====================================================================
+if (N.brandOpportunity) {
+  const c = N.brandOpportunity;
+  const s = lightSlide();
+  heading(s, c.eyebrow, c.title, c.sub);
+
+  // money strip — three across, two rows
+  const cols = 3;
+  const sw = (CW - 0.2 * (cols - 1)) / cols;
+  c.stats.forEach((t, i) => {
+    const x = M + (i % cols) * (sw + 0.2);
+    const y = 2.0 + Math.floor(i / cols) * 0.92;
+    card(s, x, y, sw, 0.82, { fill: FILL2, radius: R_ROW });
+    s.addText(t[0], {
+      x: x + 0.22, y: y + 0.08, w: sw - 0.44, h: 0.38, isTextBox: true, margin: 0,
+      fontFace: HFONT, fontSize: 22, bold: true, color: RISE, charSpacing: -0.5,
+    });
+    s.addText(t[1], {
+      x: x + 0.22, y: y + 0.45, w: sw - 0.44, h: 0.22, isTextBox: true, margin: 0,
+      fontFace: BFONT, fontSize: fitSize(t[1], sw - 0.44, 0.22, 10, 8), color: MUTED, valign: "top",
+    });
+    s.addText(t[2], {
+      x: x + 0.22, y: y + 0.64, w: sw - 0.44, h: 0.16, isTextBox: true, margin: 0,
+      fontFace: BFONT, fontSize: 8, italic: true, color: GHOST,
+    });
+  });
+
+  // effectiveness evidence
+  s.addText(c.evidence.title, {
+    x: M, y: 3.96, w: CW, h: 0.26, isTextBox: true, margin: 0,
+    fontFace: HFONT, fontSize: 13, bold: true, color: INK,
+  });
+  const ew = (CW - 0.3) / 2;
+  c.evidence.items.forEach((it, i) => {
+    const x = M + (i % 2) * (ew + 0.3);
+    const y = 4.3 + Math.floor(i / 2) * 0.72;
+    card(s, x, y, ew, 0.64, { radius: R_ROW });
+    s.addText(it[0], {
+      x: x + 0.22, y: y + 0.07, w: ew - 0.44, h: 0.22, isTextBox: true, margin: 0,
+      fontFace: BFONT, fontSize: 10, bold: true, color: RISE,
+    });
+    s.addText(it[1], {
+      x: x + 0.22, y: y + 0.28, w: ew - 0.44, h: 0.3, isTextBox: true, margin: 0,
+      fontFace: BFONT, fontSize: fitSize(it[1], ew - 0.44, 0.3, 9.5, 7.5), color: MUTED,
+      lineSpacing: 11, valign: "top",
+    });
+  });
+
+  s.addShape(pres.ShapeType.roundRect, {
+    x: M, y: 5.8, w: CW, h: 0.62, rectRadius: R_CARD,
+    fill: { color: RISE }, line: { color: RISE, width: 1 },
+  });
+  s.addText(c.readThrough, {
+    x: M + 0.3, y: 5.86, w: CW - 0.6, h: 0.5, isTextBox: true, margin: 0,
+    fontFace: BFONT, fontSize: fitSize(c.readThrough, CW - 0.6, 0.5, 11.5, 8.5),
+    color: WHITE, lineSpacing: 14, valign: "middle",
+  });
+  footnote(s, c.footnote);
+  if (c.notes) s.addNotes(c.notes);
 }
 
 // =====================================================================
