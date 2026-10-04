@@ -9,6 +9,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 build() {
+  node src/validate.js
   node src/build-html.js
   node src/build-deck.js
 }
