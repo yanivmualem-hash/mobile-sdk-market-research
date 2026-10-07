@@ -6,6 +6,7 @@ One research dataset, two outputs that stay in sync:
 |---|---|
 | Rise-themed HTML dashboard | `dist/dashboard.html` — standalone, opens from Finder |
 | Rise-themed Google Slides deck | [docs.google.com/presentation/d/1Pmdb…](https://docs.google.com/presentation/d/1PmdbNEmJlYcKwoWPClwgiyzqB8_ynNuiwTWVOVKazx0/edit) — updated **in place**, so the shared link never changes |
+| Google Sheet comparison table | created on first publish, then updated in place; its id lives in `meta.sheetFileId` |
 
 ## Adding research
 
@@ -25,7 +26,8 @@ That regenerates both outputs and pushes the deck to Google Slides.
 | `./build.sh --watch` | rebuild locally on every change to `data/` or `src/` (needs `brew install fswatch`) |
 | `./build.sh --force` | publish even when the branch guard objects (see *Working with someone else*) |
 
-First time on a new machine: `npm install`.
+First time on a new machine: `npm install`, plus `python3 -m pip install openpyxl`
+for the comparison sheet (or set `PYTHON=` to an interpreter that has it).
 
 ## What updates automatically
 
@@ -41,7 +43,7 @@ overflowing. Same for vendors: more than four in a tier and that tier paginates.
 |---|---|
 | `meta` | titles, snapshot date, and `slidesFileId` (the deck to update) |
 | `categories` | category pills and their colour, everywhere both outputs show one |
-| `sdks[]` | dashboard cards + detail modals, and the deck's tier slides |
+| `sdks[]` | dashboard cards + detail modals, the deck's tier slides, and every row of the comparison sheet |
 | `valueThemes[]` | "Added value at a glance", both outputs |
 | `problems[]` | problem panel, scorecard matrix, detail slides |
 | `notes[]` | research notes in the dashboard sidebar |
@@ -57,6 +59,11 @@ Copy an existing entry in `sdks[]` and fill in:
 - `deck.name` / `deck.tag` / `deck.blurb` / `deck.risk` — the shorter copy used on slides
 - `disclosure` — four booleans: did the vendor itself publish this, or did it come from a
   third party? These are what the disclosure chart counts, so be strict
+- `openStack` — `{prebid, openSource, note}`. `prebid` means the vendor ships or documents a
+  Prebid Mobile integration, not merely that it bids into someone else's Prebid auction
+- `edge` — `{basis, note}` where basis is `technology`, `relationships` or `both`: does the
+  offering win on technology a rival would have to rebuild, or on commercial access a rival
+  would have to negotiate? This is the analytical column of the comparison sheet
 
 ### Adding a problem
 
@@ -116,7 +123,9 @@ data/research.json      the only file with content in it
 src/theme.js            Rise design tokens, shared by both generators
 src/build-html.js       → dist/dashboard.html
 src/build-deck.js       → dist/*.pptx
+src/build-sheet.py      → dist/comparison.xlsx (needs openpyxl)
 src/publish-slides.js   pushes the .pptx into the existing Slides file
+src/publish-sheet.js    pushes the .xlsx into the existing Sheet
 archive/                the original hand-written dashboard, kept for reference
 ```
 

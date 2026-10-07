@@ -72,6 +72,15 @@ D.sdks.forEach((s, i) => {
     if (!s.deck[f] || !String(s.deck[f]).trim()) err(where, "deck.\"" + f + "\" is missing or empty");
   });
 
+  const EDGE_BASIS = ["technology", "relationships", "both"];
+  if (!s.edge) err(where, "missing \"edge\" block ({basis, note})");
+  else {
+    if (EDGE_BASIS.indexOf(s.edge.basis) < 0)
+      err(where, "edge.basis \"" + s.edge.basis + "\" is not one of " + EDGE_BASIS.join(", "));
+    if (!String(s.edge.note || "").trim())
+      err(where, "edge.note is missing — say in one line why the basis is what it is");
+  }
+
   if (!s.openStack) err(where, "missing \"openStack\" block ({prebid, openSource, note})");
   else ["prebid", "openSource"].forEach((f) => {
     if (typeof s.openStack[f] !== "boolean")

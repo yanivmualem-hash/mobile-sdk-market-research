@@ -5,13 +5,24 @@
 #   ./build.sh --local      rebuild both, skip the Google Slides upload
 #   ./build.sh --verify     rebuild, push, then re-export from Google and check
 #   ./build.sh --watch      rebuild locally whenever data/ or src/ changes
+#
+# Needs python3 with openpyxl for the comparison sheet (pip install openpyxl),
+# or set PYTHON= to an interpreter that has it.
 set -euo pipefail
 cd "$(dirname "$0")"
+
+PY_BIN="${PYTHON:-python3}"
 
 build() {
   node src/validate.js
   node src/build-html.js
   node src/build-deck.js
+  "$PY_BIN" src/build-sheet.py
+}
+
+publish() {
+  node src/publish-slides.js "$@"
+  node src/publish-sheet.js
 }
 
 case "${1:-}" in
@@ -25,7 +36,7 @@ case "${1:-}" in
       build || true
     done
     ;;
-  --verify) build; node src/publish-slides.js --verify ;;
-  --force)  build; node src/publish-slides.js --force ;;
-  *)        build; node src/publish-slides.js ;;
+  --verify) build; publish --verify ;;
+  --force)  build; publish --force ;;
+  *)        build; publish ;;
 esac

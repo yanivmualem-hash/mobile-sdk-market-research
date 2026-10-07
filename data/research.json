@@ -116,6 +116,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "technology",
+        "note": "Axon's auction optimisation is the product; the demand book follows from it."
       }
     },
     {
@@ -155,6 +159,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "both",
+        "note": "Vector is real technology, but the Editor relationship is what puts it in the app."
       }
     },
     {
@@ -194,6 +202,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "relationships",
+        "note": "The moat is a direct pipe to Google's own advertiser demand, not the SDK."
       }
     },
     {
@@ -233,6 +245,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "relationships",
+        "note": "SingleTap is patented, but it only functions because of OEM and carrier contracts."
       }
     },
     {
@@ -272,6 +288,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "both",
+        "note": "Smallest footprint is a technical claim; Chartboost Direct is a demand relationship."
       }
     },
     {
@@ -311,6 +331,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "relationships",
+        "note": "Value comes from being the exclusive supply feed for Liftoff's Cortex."
       }
     },
     {
@@ -350,6 +374,10 @@
         "prebid": true,
         "openSource": false,
         "note": "Ships a Prebid Mobile header-bidding adapter alongside its own token-based SDK bidding."
+      },
+      "edge": {
+        "basis": "technology",
+        "note": "duoBid is a format innovation; it is adopted on technical merit, not reach."
       }
     },
     {
@@ -389,6 +417,10 @@
         "prebid": false,
         "openSource": true,
         "note": "Open-sourced the auction core itself (github.com/cloudx-io/openauction) rather than the SDK wrapper — a different and stronger claim."
+      },
+      "edge": {
+        "basis": "technology",
+        "note": "A TEE-secured, open-sourced auction is the entire proposition."
       }
     },
     {
@@ -428,6 +460,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "relationships",
+        "note": "The value is who it can reach in APAC and emerging markets."
       }
     },
     {
@@ -467,6 +503,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "relationships",
+        "note": "Exclusive access to Amazon's own advertiser demand, full stop."
       }
     },
     {
@@ -506,6 +546,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "both",
+        "note": "Patented Intelligent Marketplace plus a brand-agency demand book."
       }
     },
     {
@@ -545,6 +589,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "both",
+        "note": "Cortex is genuine technology, but its edge comes from owning the SSP it buys through."
       }
     },
     {
@@ -584,6 +632,10 @@
         "prebid": true,
         "openSource": true,
         "note": "OpenWrap SDK is built on Prebid; PubMatic's Demand Manager Mobile is a Prebid-SDK product. Prebid Mobile itself is open source under Prebid.org."
+      },
+      "edge": {
+        "basis": "technology",
+        "note": "A Prebid-based sub-200ms wrapper; the 200+ partners come via an open standard."
       }
     },
     {
@@ -623,6 +675,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "technology",
+        "note": "ID-less persona targeting is the product; the premium app list is the proof."
       }
     },
     {
@@ -662,6 +718,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "relationships",
+        "note": "The in-app SDK is new; the asset is the brand and agency demand book behind it."
       }
     },
     {
@@ -701,6 +761,10 @@
         "prebid": true,
         "openSource": true,
         "note": "HyBid 3.0 is open-sourced on GitHub, and PubNative is documented as a Prebid Mobile bidder."
+      },
+      "edge": {
+        "basis": "technology",
+        "note": "An open-source modular SDK; the DSP connections follow the integration."
       }
     },
     {
@@ -740,6 +804,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "technology",
+        "note": "CARA is the product — publishers adopt it for the bid prices the model produces."
       }
     },
     {
@@ -779,6 +847,10 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "relationships",
+        "note": "Adoption follows the demand it carries, particularly Chinese-origin gaming."
       }
     },
     {
@@ -818,6 +890,53 @@
         "prebid": false,
         "openSource": false,
         "note": ""
+      },
+      "edge": {
+        "basis": "relationships",
+        "note": "A single integration into an existing exchange; little differentiated technology."
+      }
+    },
+    {
+      "id": "nimbus",
+      "order": 20,
+      "name": "Nimbus (Ads by Nimbus)",
+      "category": "SSP / Header Bidding",
+      "palette": "gray",
+      "tier": "challenger",
+      "coreDifferentiator": "Takes no cut from either side: Nimbus charges demand partners nothing to bid and passes the net CPM straight to the publisher, so the auction is not diluted by intermediary fees. Built inside Timehop for its own app, then opened to third parties.",
+      "structuralWeakness": "A zero-take-rate model means revenue must come from fees elsewhere, and the business is small relative to the SSPs it competes with; publisher scale is not independently published.",
+      "adFormats": "Banner, interstitial, rewarded, native and video, plus the Nimbus Dynamic Unit",
+      "integrationModel": "Lightweight publisher SDK running a direct server-side auction between buyers and sellers, with no mediation layer taking a margin; Prebid auction demand went live on Nimbus in 2026.",
+      "platforms": "iOS, Android",
+      "sdkSize": "Not publicly disclosed",
+      "reporting": "Publisher reporting on auction and revenue performance; transparency into the net CPM returned by each demand partner",
+      "privacy": "Standard GDPR and US state consent handling passed through the SDK",
+      "positioning": "Publishers who want a transparent, fee-free auction and direct buyer relationships rather than a mediation waterfall",
+      "pricing": "Free for demand partners — Nimbus charges no buyer to participate and takes no cut of CPM from either party, passing the net CPM to the publisher",
+      "demandNetwork": "50+ demand partners through the SDK and 45+ in the core auction, including Amazon Publisher Services, Moloco and Criteo",
+      "proprietaryTech": "A direct buyer-to-seller auction with no margin taken; the Nimbus Dynamic Unit ad format; originally proven on Timehop's own inventory (reported 9x eCPM, 6x fill, 10x revenue)",
+      "marketShare": "Independent share not published; built by Timehop in 2017 and scaled to third-party publishers. Smaller than the public SSPs, and positioned on fee transparency rather than reach.",
+      "sources": "adsbynimbus.com product and demand pages; AWS Startups case study on Timehop; Nimbus partner announcements (Moloco, Amazon, Criteo)",
+      "deck": {
+        "name": "Nimbus",
+        "tag": "SSP · zero take rate",
+        "blurb": "Charges demand partners nothing and takes no cut of CPM from either side, passing the net CPM straight to the publisher. 50+ demand partners; built inside Timehop and opened to third parties.",
+        "risk": "A zero-take-rate model has to earn elsewhere, and the business is small next to the SSPs it competes with; publisher scale is not published."
+      },
+      "disclosure": {
+        "adFormats": true,
+        "reporting": true,
+        "sdkSize": false,
+        "takeRate": true
+      },
+      "openStack": {
+        "prebid": true,
+        "openSource": false,
+        "note": "Prebid auction demand went live on Nimbus in 2026; the SDK itself is not open-sourced."
+      },
+      "edge": {
+        "basis": "both",
+        "note": "A fee-free auction is a business-model choice executed as technology."
       }
     }
   ],
