@@ -571,15 +571,15 @@
       "pricing": "Outcome-based advertiser pricing (CPI/CPA/ROAS); not a publisher revenue-share model",
       "demandNetwork": "Per 2026 Nasdaq S-1 filings, shared SDK integrated in 160,000+ apps, ~1.4B DAU, 881 demand-side customers in 2025",
       "proprietaryTech": "Cortex: proprietary neural-network prediction/bidding engine, plus vertical-specific 'Adapters'",
-      "marketShare": "Filed for Nasdaq IPO (S-1) Jan/Apr 2026; names Google, Meta, Amazon, AppLovin, Unity, and Moloco as key competitors",
-      "sources": "Liftoff Accelerate product page; TradingView S-1 coverage",
+      "marketShare": "Listed on Nasdaq (LFTO) June 2026 at a $3.83B IPO valuation; Q2 2026 revenue $220M (+35% YoY), FY2026 guidance $870–880M. S-1 names Google, Meta, Amazon, AppLovin, Unity, and Moloco as key competitors",
+      "sources": "Liftoff Accelerate product page; TradingView S-1 coverage; Liftoff Q2 2026 earnings release (GlobeNewswire, Aug 12 2026)",
       "palette": "teal",
       "tier": "flywheel",
       "deck": {
         "name": "Liftoff + Vungle",
         "tag": "DSP + Mediation SDK",
         "blurb": "Unified DSP+SSP around Cortex, a neural prediction engine trained on the Vungle exchange it owns. Per the 2026 S-1: 160,000+ apps, ~1.4B DAU, 881 demand-side customers.",
-        "risk": "Cortex's edge comes substantially from owning the SSP it buys through — the same conflict, with an IPO filing now attached."
+        "risk": "Cortex's edge comes substantially from owning the SSP it buys through — the same conflict, now under public-company scrutiny since its June 2026 listing."
       },
       "disclosure": {
         "adFormats": true,

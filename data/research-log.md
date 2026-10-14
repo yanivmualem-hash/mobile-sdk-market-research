@@ -8,6 +8,32 @@ Newest first.
 
 ---
 
+## 2026-10-08 — weekly pass (automated)
+
+**Checked:** trade press (ppc.land, AdExchanger, Mobile Dev Memo), public-vendor earnings and
+filings (AppLovin, Unity, Digital Turbine, Liftoff), Prebid Mobile news, Moloco/Verve/InMobi/
+Chartboost newsrooms, Pangle exchange status, Google GMA Next-Gen SDK.
+
+**Changed (Liftoff, 3 fields):** `marketShare`, `sources` and `deck.risk` still said Liftoff had
+only *filed* for its IPO. It listed on Nasdaq (LFTO) on 4 June 2026 at a $3.83B valuation; first
+earnings 12 Aug 2026 ($220M Q2 revenue, +35%). The release discloses no take rate, so
+`disclosure.takeRate` stays `false`.
+
+**Considered and rejected:**
+- **AppLovin v Unity over Unity's Ad Quality SDK** — JAMS arbitration filed 27 Sep 2026; SF
+  Superior Court denied AppLovin's TRO on 30 Sep. AppLovin alleges Ad Quality (bundled in
+  LevelPlay 8.9.0) reads MAX auction data; Unity denies. All allegations untested and the
+  merits go to private arbitration. Bears on problem 1 (self-preferencing), which is already
+  `open`. **Revisit if** the arbitrator rules, or either side changes what its SDK collects.
+- **Google GMA Next-Gen SDK said to work only with AdMob mediation** — from a third-party dev
+  blog; Google's own Next-Gen docs (checked 2026-10-08) don't state it. **Revisit if** Google
+  documents third-party mediation incompatibility or a legacy-SDK sunset date.
+- **Pangle** — still no evidence its exchange carries meaningful third-party supply; stays
+  deferred per the 2026-10-04 condition. Meta Audience Network unchanged.
+- No new Prebid Mobile adopters or October announcements found for the other tracked vendors.
+
+---
+
 ## 2026-10-07 — Nimbus, and the tech-vs-relationships axis
 
 **Added:** Nimbus (Ads by Nimbus). Charges demand partners nothing and takes no cut of CPM
