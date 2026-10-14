@@ -7,6 +7,8 @@ One research dataset, two outputs that stay in sync:
 | Rise-themed HTML dashboard | `dist/dashboard.html` — standalone, opens from Finder |
 | Rise-themed Google Slides deck | [docs.google.com/presentation/d/1Pmdb…](https://docs.google.com/presentation/d/1PmdbNEmJlYcKwoWPClwgiyzqB8_ynNuiwTWVOVKazx0/edit) — updated **in place**, so the shared link never changes |
 | Google Sheet comparison table | created on first publish, then updated in place; its id lives in `meta.sheetFileId` |
+| Google Doc briefing | generated to `dist/brief.md`, uploaded by hand; id in `meta.briefDocId` |
+| Google Slides **working document** | **hand-edited — never auto-published.** See below |
 
 ## Adding research
 
@@ -104,6 +106,19 @@ because a JSON file that merged cleanly can still be invalid.
 
 Don't commit `dist/`. It's generated and gitignored; a 50KB regenerated HTML file would
 conflict on every single merge.
+
+## The working document
+
+`src/build-workingdeck.js` generates `dist/working-deck.pptx` — one chapter per tab of the
+research spreadsheet, one slide per competitor, with dashed placeholders for call notes,
+headcount and anything else a human fills in.
+
+**It is deliberately not in `build.sh`.** That deck is edited by people in Google Slides;
+regenerating and republishing it would silently destroy their work. Run the generator by
+hand only when a fresh scaffold is genuinely wanted, and publish it to a *new* file rather
+than over `meta.workingDeckId`.
+
+Everything else in `dist/` is generated output and safe to overwrite. This one is not.
 
 ## Publishing prerequisites
 
