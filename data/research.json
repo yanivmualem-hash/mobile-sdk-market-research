@@ -5,7 +5,8 @@
     "snapshotDate": "2026-09-22",
     "owner": "Rise · Competitive intelligence",
     "slidesFileId": "1PmdbNEmJlYcKwoWPClwgiyzqB8_ynNuiwTWVOVKazx0",
-    "sheetFileId": "1UX9Wx4AaXI8jXZaPg614i0ZvpBmA8ryakXDHGZ705oI"
+    "sheetFileId": "1UX9Wx4AaXI8jXZaPg614i0ZvpBmA8ryakXDHGZ705oI",
+    "briefDocId": "1_rehcXdctnAE07jPAa_tOSZZBEVvqGOzu7-UNogO0rc"
   },
   "categories": [
     {
@@ -939,6 +940,49 @@
         "basis": "both",
         "note": "A fee-free auction is a business-model choice executed as technology."
       }
+    },
+    {
+      "id": "bidmachine",
+      "order": 21,
+      "name": "BidMachine (Appodeal)",
+      "category": "SSP / Header Bidding",
+      "palette": "gray",
+      "tier": "challenger",
+      "coreDifferentiator": "Appodeal’s in-app exchange, open-sourced in 2019 — years before open auction code became a positioning anyone marketed. Sold as the way to add exchange demand to an existing stack rather than replace it, and reachable as an SDK bidder inside AppLovin MAX since 2022.",
+      "structuralWeakness": "Sits alongside Appodeal’s own mediation product, so the two compete for the same publisher; current scale figures come from a sponsored vendor listing rather than an audited or dated source.",
+      "adFormats": "Banner, interstitial, rewarded, native and video via the BidMachine SDK",
+      "integrationModel": "Open-source in-app exchange with header-bidding mechanics; usable directly as a publisher SDK, alongside Appodeal mediation, or as an SDK bidding network inside AppLovin MAX (added August 2022).",
+      "platforms": "iOS, Android, Unity",
+      "sdkSize": "Not publicly disclosed",
+      "reporting": "Not detailed in sources reviewed — flagged unclear",
+      "privacy": "Standard GDPR and US state consent handling passed through the SDK; not documented in detail in sources reviewed",
+      "positioning": "Publishers who want to add exchange demand to an existing monetization setup rather than adopt an all-in-one mediation platform, and DSPs wanting SDK-direct supply",
+      "pricing": "Not publicly disclosed",
+      "demandNetwork": "Reported 70+ DSPs and 14 header-bidding ad networks as of the 2019 open-source announcement; also distributed as an SDK bidder inside AppLovin MAX",
+      "proprietaryTech": "The exchange itself, open-sourced in August 2019 — the earliest open-source precedent in this set, predating CloudX’s open auction by roughly seven years",
+      "marketShare": "Reported 25M+ daily users across 10,000+ apps at the 2019 open-sourcing. A 2026 vendor listing claims 1T+ monthly ad requests and 600M verified SDK users — self-reported, undated and unverified against an independent source; treat with caution.",
+      "sources": "Appodeal and bidmachine.io blogs (open-source announcement 2019; Targetoo integration 2023); PocketGamer.biz on the AppLovin MAX integration (2022); G2 vendor listing (2026, sponsored — unverified)",
+      "deck": {
+        "name": "BidMachine",
+        "tag": "SSP · open-sourced 2019",
+        "blurb": "Appodeal’s in-app exchange, open-sourced in 2019 — years before open auction code became a marketed position. Sold as a way to add exchange demand to an existing stack, and an SDK bidder inside AppLovin MAX since 2022.",
+        "risk": "Competes with Appodeal’s own mediation for the same publisher, and its current scale figures come from a sponsored listing rather than an audited source."
+      },
+      "disclosure": {
+        "adFormats": true,
+        "reporting": false,
+        "sdkSize": false,
+        "takeRate": false
+      },
+      "openStack": {
+        "prebid": false,
+        "openSource": true,
+        "note": "The exchange was open-sourced in August 2019. Whether the client SDK is also open, and whether anyone has forked it, is unverified — worth asking on the call."
+      },
+      "edge": {
+        "basis": "both",
+        "note": "Open-source exchange is real technology; distribution comes from Appodeal’s existing publisher base and the MAX bidder slot."
+      }
     }
   ],
   "valueThemes": [
@@ -1379,6 +1423,118 @@
       "readThrough": "The budgets are enormous and the effectiveness evidence is now solid. What is missing is the plumbing brand planners need — cross-app reach and frequency, pre-bid verification, a deal-ID tier. That is open gap #4, and it is the reason this money still flows to walled gardens and retail media rather than the open in-app market.",
       "footnote": "Figures are from different houses on different definitions and do not reconcile: 2026 in-app estimates range from roughly $230B to $425B depending on whether walled-garden social is counted. Treat the direction as reliable and the absolute as approximate.",
       "notes": "The point of this slide is the read-through, not the numbers. Brand and commerce money is the largest adjacent pool, the effectiveness case is already made, and the blocker is measurement plumbing rather than persuasion."
+    },
+    "interview": {
+      "probes": {
+        "cloudx": "The auction runs in an enclave. What is actually in the SDK versus the enclave — and how do you prove the enclave to a publisher, who cannot read code, rather than to a buyer who can?",
+        "mobilefuse": "You offer both token-based SDK bidding and a Prebid Mobile adapter. Do you maintain two paths? Which do publishers pick, and why?",
+        "digital-turbine": "SingleTap sits below the SDK, at firmware level. What can you do there that an SDK-only competitor never can — and what does that require of the device maker?",
+        "bidmachine": "You open-sourced the exchange in 2019, years before anyone marketed that. Is the SDK open too? Has anyone actually forked it, or is open source a trust signal nobody exercises? And how does BidMachine sit alongside Appodeal’s own mediation without cannibalising it?",
+        "magnite": "The in-app SDK is new. What did you deliberately leave out of v1, and how does the integration ask compare with what you ask of web and CTV publishers?",
+        "pubmatic-openwrap": "OpenWrap is under 500KB with sub-200ms auctions. How is that 200ms measured, and what is p95 in the field on a mid-range Android on 4G?",
+        "inmobi": "You have your own publisher SDK and adapters inside everyone else’s mediation. Which gets the engineering, and do publishers ever run both?",
+        "nimbus": "There is no mediation layer in your model. How does the SDK resolve the auction, and what happens on poor connectivity or a cold start?"
+      },
+      "sections": [
+        [
+          "The five to ask everyone",
+          [
+            "How big is the SDK on each platform, and what latency does it add at p95 <b>in the field</b>?",
+            "How did you get the SDK distributed? How hard was it, and what is the pitch?",
+            "What does a publisher have to ship an app release for — and what can you change server-side without one?",
+            "From signed to live traffic, how long? Where does it stall?",
+            "Has a publisher ever removed your SDK? What happened?"
+          ],
+          "Identical wording every time, so the answers form a comparable grid."
+        ],
+        [
+          "What the SDK actually is",
+          [
+            "What runs on-device versus on your servers, and why did you draw the line there?",
+            "Is the auction resolved client-side or server-side? What changes for the publisher either way?",
+            "Did you build on Prebid Mobile or roll your own? What did that decision cost you?",
+            "Is any of it open source? Has a publisher or buyer ever actually read or forked it?",
+            "What third-party dependencies does the SDK pull in?"
+          ],
+          ""
+        ],
+        [
+          "Footprint and performance",
+          [
+            "Size added per platform, compiled, after stripping?",
+            "Latency added at p50 and p95 — measured how?",
+            "What is your SDK-attributable crash rate, and how do publishers find out about it?",
+            "Which of these numbers has a publisher ever rejected you over?"
+          ],
+          "Only 4 of the 21 vendors tracked publish an SDK size, and essentially none publish latency. These cannot be looked up."
+        ],
+        [
+          "Distribution and the pitch",
+          [
+            "Who in the publisher org says yes — monetization, engineering, exec? Who can veto, and on what grounds?",
+            "What is the pitch when they already have MAX or AdMob and do not want another SDK?",
+            "Do you lead with revenue lift, transparency, or fill? What actually lands?",
+            "How do you get the first ten publishers versus the next hundred — same motion or different?",
+            "Do you pay for integration, guarantee a floor, or otherwise de-risk it?"
+          ],
+          ""
+        ],
+        [
+          "Integration friction",
+          [
+            "How many engineering days does a typical integration really take?",
+            "Of publishers who start, what share finish? Where do they drop out?",
+            "What most commonly goes wrong in the first week of live traffic?"
+          ],
+          ""
+        ],
+        [
+          "The release-cycle problem",
+          [
+            "How often do you ship a new SDK version, and how fast do publishers actually adopt it?",
+            "What share of live traffic is on a build more than six months old?",
+            "What can you <b>not</b> fix because too many publishers are on an old version?",
+            "When you add a demand partner, does the publisher have to do anything?"
+          ],
+          "Adapter demand costs the publisher an app release; server-side demand costs nothing. Most of the economics of this market follow from that."
+        ],
+        [
+          "Living with mediation",
+          [
+            "Do you sit inside MAX, AdMob and LevelPlay, or replace them? Both?",
+            "How much engineering goes into maintaining adapters for other people’s mediation?",
+            "Has a mediation platform ever changed something that broke you? What did you do?",
+            "Do publishers ever run you alongside a mediation SDK? Does that work?"
+          ],
+          ""
+        ],
+        [
+          "Platform constraints",
+          [
+            "What did ATT and SKAdNetwork actually cost you, in SDK terms?",
+            "Where are you on Android Privacy Sandbox, and what does it break?",
+            "Has App Store review ever rejected a publisher because of your SDK?",
+            "Privacy manifests and required-reason APIs — how much work was that?"
+          ],
+          ""
+        ],
+        [
+          "Support and churn",
+          [
+            "What does support load look like per publisher, and what is the most common ticket?",
+            "When revenue drops, how does a publisher tell whether it is you or the market?",
+            "What auction-level data do you expose, and what do you hold back?"
+          ],
+          ""
+        ],
+        [
+          "The one to end on",
+          [
+            "If you rebuilt the SDK from scratch today, what would you do differently?"
+          ],
+          "Disarming, honestly answered, and it tells you where the architecture hurts."
+        ]
+      ]
     }
   }
 }

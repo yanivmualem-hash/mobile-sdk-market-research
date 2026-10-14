@@ -18,6 +18,7 @@ build() {
   node src/build-html.js
   node src/build-deck.js
   "$PY_BIN" src/build-sheet.py
+  node src/build-brief.js
 }
 
 publish() {
